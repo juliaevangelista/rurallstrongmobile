@@ -1,0 +1,199 @@
+{
+  "project_info": {
+    "project_number": "90711049385",
+    "firebase_url": "https://rurall-apk-01202-1580563139830.firebaseio.com",
+    "project_id": "rurall-apk-01202-1580563139830",
+    "storage_bucket": "rurall-apk-01202-1580563139830.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90711049385:android:1765efde6bac7640c255b8",
+        "android_client_info": {
+          "package_name": "com.example.rural_strong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90711049385-bp1hvcduaur0mctg7a2e28o3t5u98tbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNLit1zbMWu7ZWl7KjpbzhdP7eMeDs5Ew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90711049385-bp1hvcduaur0mctg7a2e28o3t5u98tbu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "90711049385-4sevc2hjciqqrjqs5nok98see6tf14h5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.rurallstrongflutter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90711049385:android:6bfd896c251cfbc0c255b8",
+        "android_client_info": {
+          "package_name": "com.example.rurallstrong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90711049385-bp1hvcduaur0mctg7a2e28o3t5u98tbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNLit1zbMWu7ZWl7KjpbzhdP7eMeDs5Ew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90711049385-bp1hvcduaur0mctg7a2e28o3t5u98tbu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "90711049385-4sevc2hjciqqrjqs5nok98see6tf14h5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.rurallstrongflutter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90711049385:android:4721d162be8e91eac255b8",
+        "android_client_info": {
+          "package_name": "com.example.ruralstrongflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90711049385-bp1hvcduaur0mctg7a2e28o3t5u98tbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNLit1zbMWu7ZWl7KjpbzhdP7eMeDs5Ew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90711049385-bp1hvcduaur0mctg7a2e28o3t5u98tbu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "90711049385-4sevc2hjciqqrjqs5nok98see6tf14h5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.rurallstrongflutter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90711049385:android:e49fc20cf85ed7f1c255b8",
+        "android_client_info": {
+          "package_name": "com.ruralapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90711049385-mmr09al1r323aq904rq1prigfeemjrhk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ruralapp",
+            "certificate_hash": "8e2bee10e74874f2dfff8905c2b1766dc403787e"
+          }
+        },
+        {
+          "client_id": "90711049385-bp1hvcduaur0mctg7a2e28o3t5u98tbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNLit1zbMWu7ZWl7KjpbzhdP7eMeDs5Ew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90711049385-bp1hvcduaur0mctg7a2e28o3t5u98tbu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "90711049385-4sevc2hjciqqrjqs5nok98see6tf14h5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.rurallstrongflutter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90711049385:android:5b0656ec3515f9adc255b8",
+        "android_client_info": {
+          "package_name": "rurall.strong.flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90711049385-bp1hvcduaur0mctg7a2e28o3t5u98tbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNLit1zbMWu7ZWl7KjpbzhdP7eMeDs5Ew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90711049385-bp1hvcduaur0mctg7a2e28o3t5u98tbu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "90711049385-4sevc2hjciqqrjqs5nok98see6tf14h5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.rurallstrongflutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
