@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreServico {
-  final db = FirebaseFirestore.instance;
-  
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   Future<void> adicionarDocId(String id) async {
     try {
-      // Assuming you want to create a document with the provided ID
-      await db.collection("users").doc(id).set({'id': id}); // For example
-      print("Document added successfully"); // Using print for debugging, replace with logging framework in production
+      // Assume que você quer criar um documento com o ID fornecido
+      await _firestore.collection("users").doc(id).set({'id': id}); // Por exemplo
+      print("Documento adicionado com sucesso"); // Usando print para depuração, substitua por um framework de logging em produção
     } catch (e) {
-      print("Failed to add document: $e"); // Using print for debugging, replace with logging framework in production
+      print("Falha ao adicionar documento: $e"); // Usando print para depuração, substitua por um framework de logging em produção
     }
   }
 }

@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:rural_strong/servicos/firecloud_servico.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rurallstrong/servicos/firecloud_servico.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-
-class AutenticaoServico extends FirestoreServico {
+class AutenticaoServico {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final DatabaseReference _usersRef =
+      FirebaseDatabase.instance.reference().child('users');
 
   Future<String?> cadastrarUsuario({
     required String email,
@@ -17,24 +16,20 @@ class AutenticaoServico extends FirestoreServico {
   }) async {
     try {
       UserCredential userCredential =
-        await _firebaseAuth.createUserWithEmailAndPassword(
+          await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: senha,
       );
-    
+
       String userId = userCredential.user!.uid;
 
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    CollectionReference users = firestore.collection('users');
-
-    await users.doc(userId).set({
-      'email': email,
-      'cpf': cpf,
-      'cnpj': cnpj,
-      'nome': nome,
-      'celular': celular,
-    });
+      await _usersRef.child(userId).set({
+        'email': email,
+        'cpf': cpf,
+        'cnpj': cnpj,
+        'nome': nome,
+        'celular': celular,
+      });
 
       return null;
     } on FirebaseAuthException catch (e) {

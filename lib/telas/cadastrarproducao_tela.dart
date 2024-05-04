@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:rurallstrong/servicos/autenticao_servico.dart';
 import 'package:rurallstrong/telas/telateste.dart';
@@ -20,6 +21,8 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
   TextEditingController _nometalhaoController = TextEditingController();
   DateTime _dataInicial = DateTime.now();
   DateTime _dataFinal = DateTime.now();
+  final DatabaseReference _producaoRef =
+      FirebaseDatabase.instance.reference().child('producao');
 
   @override
   Widget build(BuildContext context) {
@@ -363,36 +366,8 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
             Container(
               margin: EdgeInsets.only(top: 20),
               child: ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    // Aqui você pode chamar o método para obter o ID do usuário
-                    String? userId = await AutenticaoServico().obterId();
-                    if (userId != null) {
-                      Map<String, dynamic> data = {
-                        'cultivo': _cultivoProducaoController.text,
-                        'nomeproducao': _nomeProducaoController.text,
-                        'tamanhohectares': _hectaresController.text,
-                        'fazenda': _fazendaController.text,
-                        'nometalhao': _nometalhaoController.text,
-                        'datainicial': _dataInicial,
-                        'datafinal': _dataFinal,
-                        // Adicione outros campos conforme necessário
-                      };
-                      FirebaseFirestore.instance
-                          .collection('users/$userId/dados_producao')
-                          .add(data)
-                          .then((value) {
-                        _limparCampos();
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Dados enviados com sucesso!'),
-                        ));
-                      }).catchError((error) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Erro ao enviar os dados: $error'),
-                        ));
-                      });
-                    }
-                  }
+                onPressed: () {
+                  salvarDadosProducao();
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.black, // Cor de fundo do botão
@@ -504,6 +479,38 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
         ],
       ),
     );
+  }
+
+  void salvarDadosProducao() {
+    if (_formKey.currentState!.validate()) {
+      // Aqui você pode chamar o método para obter o ID do usuário
+      AutenticaoServico().obterId().then((userId) {
+        if (userId != null) {
+          Map<String, dynamic> data = {
+            'cultivo': _cultivoProducaoController.text,
+            'nomeproducao': _nomeProducaoController.text,
+            'tamanhohectares': _hectaresController.text,
+            'fazenda': _fazendaController.text,
+            'nometalhao': _nometalhaoController.text,
+            'datainicial': _dataInicial.toString(),
+            'datafinal': _dataFinal.toString(),
+            // Adicione outros campos conforme necessário
+          };
+
+          // Salvando os dados no Realtime Database
+          _producaoRef.child(userId).push().set(data).then((_) {
+            _limparCampos();
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Dados enviados com sucesso!'),
+            ));
+          }).catchError((error) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Erro ao enviar os dados: $error'),
+            ));
+          });
+        }
+      });
+    }
   }
 
   void _selecionarDataInicial() {
