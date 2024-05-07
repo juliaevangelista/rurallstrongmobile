@@ -5,7 +5,10 @@ import 'package:rurallstrong/telas/pragas_tela.dart';
 //import 'package:rural_strong/telas/telateste.dart';
 
 class MonitoramentoTela extends StatefulWidget {
-  const MonitoramentoTela({Key? key}) : super(key: key);
+  final String name;
+  final String talhao;
+
+  const MonitoramentoTela({super.key, required this.name, required this.talhao});
 
   @override
   State<MonitoramentoTela> createState() => _MonitoramentoTelaState();
@@ -75,7 +78,7 @@ class _MonitoramentoTelaState extends State<MonitoramentoTela> {
                                         fontSize: 11),
                                   ),
                                   Text(
-                                    'MILHO 14H BAYER',
+                                    widget.name,
                                     style: TextStyle(
                                         color: Color.fromRGBO(61, 190, 1, 1),
                                         fontSize: 15,
@@ -96,7 +99,7 @@ class _MonitoramentoTelaState extends State<MonitoramentoTela> {
                                         fontSize: 11),
                                   ),
                                   Text(
-                                    'TALHÃO 09',
+                                    widget.talhao,
                                     style: TextStyle(
                                         color: Color.fromRGBO(61, 190, 1, 1),
                                         fontSize: 15,
