@@ -12,7 +12,7 @@ class ProducaoAtivasTela extends StatefulWidget {
 
 class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
   DatabaseReference _producoesRef =
-      FirebaseDatabase.instance.reference().child('Producoes');
+      FirebaseDatabase.instance.ref().child('Producoes');
 
   @override
   Widget build(BuildContext context) {

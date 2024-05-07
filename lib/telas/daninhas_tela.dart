@@ -24,7 +24,7 @@ class _DaninhasTelaState extends State<DaninhasTela> {
   String imageUrl = '';
   File? _selectedImage;
   final DatabaseReference _DaninhasRef =
-      FirebaseDatabase.instance.reference().child('Daninhas');
+      FirebaseDatabase.instance.ref().child('Daninhas');
 
   @override
   Widget build(BuildContext context) {

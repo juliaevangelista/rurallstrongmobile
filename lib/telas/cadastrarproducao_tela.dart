@@ -3,6 +3,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:rurallstrong/telas/telateste.dart';
+//import 'package:rurallstrong/repositories/dados.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 
 class CadastrarProducaoTela extends StatefulWidget {
@@ -22,7 +23,10 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
   DateTime _dataInicial = DateTime.now();
   DateTime _dataFinal = DateTime.now();
   final DatabaseReference _producaoRef =
-      FirebaseDatabase.instance.reference().child('Producoes');
+      FirebaseDatabase.instance.ref().child('Producoes');
+  String _selectedCultivo = 'MILHO'; // Valor inicial do dropdown
+  String _selectedFazenda = 'PRIMAVERA';  // Valor inicial do dropdown
+  String _selectedTalhao = 'TALHÃO 09';  // Valor inicial do dropdown
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +92,7 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
             ),
             Container(
               width: 350,
-              height: 600,
+              height: 640,
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -125,43 +129,55 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 10),
-                                child: TextFormField(
-                                  controller: _cultivoProducaoController,
+                                child: DropdownButtonFormField<String>(
+                                  value: _selectedCultivo,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _selectedCultivo = newValue!;
+                                    });
+                                  },
                                   decoration: InputDecoration(
-                                    labelText: 'MILHO',
-                                    labelStyle: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
                                     filled: true,
                                     fillColor: Colors.white,
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Color.fromRGBO(61, 190, 1, 1),
-                                          width: 2.0),
-                                      borderRadius: BorderRadius.circular(
-                                          8.0), // Cor da borda quando o campo não está focado
+                                        color: Color.fromRGBO(61, 190, 1, 1),
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 7.0),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.never,
-                                    suffixIcon: ImageIcon(
-                                      AssetImage(
-                                          'assets/icon-button.png'), // Aqui você pode substituir pelo ícone desejado
-                                      color: Colors.black,
-                                    ),
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Campo obrigatório';
-                                    }
-                                    return null;
-                                  },
+                                  icon: ImageIcon(
+                                    AssetImage(
+                                        'assets/icon-button.png'), // Aqui você pode substituir pelo ícone desejado
+                                    color: Colors.black,
+                                  ),
+                                  items: <String>[
+                                    'MILHO',
+                                    'CAJU',
+                                    'SOJA',
+                                  ].map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 1),
+                                          child: Text(
+                                            value,
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ).toList(),
                                 ),
+                                
                               ),
                               SizedBox(
                                 height: 10,
@@ -244,11 +260,11 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                                         vertical: 10.0, horizontal: 7.0),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.never,
-                                    suffixIcon: ImageIcon(
+                                    /* suffixIcon: ImageIcon(
                                       AssetImage(
                                           'assets/icon-button.png'), // Aqui você pode substituir pelo ícone desejado
                                       color: Colors.black,
-                                    ),
+                                    ), */
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
@@ -270,42 +286,53 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 10),
-                                child: TextFormField(
-                                  controller: _fazendaController,
+                                child: DropdownButtonFormField<String>(
+                                  value: _selectedFazenda,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _selectedFazenda = newValue!;
+                                    });
+                                  },
                                   decoration: InputDecoration(
-                                    labelText: 'FAZENDA PRIMAVERA',
-                                    labelStyle: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
                                     filled: true,
                                     fillColor: Colors.white,
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Color.fromRGBO(61, 190, 1, 1),
-                                          width: 2.0),
-                                      borderRadius: BorderRadius.circular(
-                                          8.0), // Cor da borda quando o campo não está focado
+                                        color: Color.fromRGBO(61, 190, 1, 1),
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 7.0),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.never,
-                                    suffixIcon: ImageIcon(
-                                      AssetImage(
-                                          'assets/icon-button.png'), // Aqui você pode substituir pelo ícone desejado
-                                      color: Colors.black,
-                                    ),
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Campo obrigatório';
-                                    }
-                                    return null;
-                                  },
+                                  icon: ImageIcon(
+                                    AssetImage(
+                                        'assets/icon-button.png'), // Aqui você pode substituir pelo ícone desejado
+                                    color: Colors.black,
+                                  ),
+                                  items: <String>[
+                                    'PRIMAVERA',
+                                    'ESTRELA',
+                                    'BOA VISTA',
+                                  ].map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 0),
+                                          child: Text(
+                                            value,
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ).toList(),
                                 ),
                               ),
                               SizedBox(
@@ -320,42 +347,53 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 10),
-                                child: TextFormField(
-                                  controller: _nometalhaoController,
+                                child: DropdownButtonFormField<String>(
+                                  value: _selectedTalhao,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _selectedTalhao = newValue!;
+                                    });
+                                  },
                                   decoration: InputDecoration(
-                                    labelText: 'TALHÃO 09',
-                                    labelStyle: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
                                     filled: true,
                                     fillColor: Colors.white,
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Color.fromRGBO(61, 190, 1, 1),
-                                          width: 2.0),
-                                      borderRadius: BorderRadius.circular(
-                                          8.0), // Cor da borda quando o campo não está focado
+                                        color: Color.fromRGBO(61, 190, 1, 1),
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 7.0),
-                                    floatingLabelBehavior: FloatingLabelBehavior
-                                        .never, // 'assets/icon-button.png'
-                                    suffixIcon: ImageIcon(
-                                      AssetImage(
-                                          'assets/icon-button.png'), // Aqui você pode substituir pelo ícone desejado
-                                      color: Colors.black,
-                                    ),
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Campo obrigatório';
-                                    }
-                                    return null;
-                                  },
+                                  icon: ImageIcon(
+                                    AssetImage(
+                                        'assets/icon-button.png'), // Aqui você pode substituir pelo ícone desejado
+                                    color: Colors.black,
+                                  ),
+                                  items: <String>[
+                                    'TALHÃO 09',
+                                    'TALHÂO 10',
+                                    'TALHÃO 11',
+                                  ].map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 0),
+                                          child: Text(
+                                            value,
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ).toList(),
                                 ),
                               ),
                             ],
@@ -481,33 +519,32 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
     );
   }
 
-void salvarDadosProducao() {
-  if (_formKey.currentState!.validate()) {
-    Map<String, dynamic> data = {
-      'cultivo': _cultivoProducaoController.text,
-      'nomeproducao': _nomeProducaoController.text,
-      'tamanhohectares': _hectaresController.text,
-      'fazenda': _fazendaController.text,
-      'nometalhao': _nometalhaoController.text,
-      'datainicial': _dataInicial.toString(),
-      'datafinal': _dataFinal.toString(),
-      // Adicione outros campos conforme necessário
-    };
+  void salvarDadosProducao() {
+    if (_formKey.currentState!.validate()) {
+      Map<String, dynamic> data = {
+        'cultivo': _cultivoProducaoController.text,
+        'nomeproducao': _nomeProducaoController.text,
+        'tamanhohectares': _hectaresController.text,
+        'fazenda': _fazendaController.text,
+        'nometalhao': _nometalhaoController.text,
+        'datainicial': _dataInicial.toString(),
+        'datafinal': _dataFinal.toString(),
+        // Adicione outros campos conforme necessário
+      };
 
-    // Salvando os dados no Realtime Database sem usar o userId como chave
-    _producaoRef.push().set(data).then((_) {
-      _limparCampos();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Dados enviados com sucesso!'),
-      ));
-    }).catchError((error) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Erro ao enviar os dados: $error'),
-      ));
-    });
+      // Salvando os dados no Realtime Database sem usar o userId como chave
+      _producaoRef.push().set(data).then((_) {
+        _limparCampos();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Dados enviados com sucesso!'),
+        ));
+      }).catchError((error) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Erro ao enviar os dados: $error'),
+        ));
+      });
+    }
   }
-}
-
 
   void _selecionarDataInicial() {
     DatePicker.showDatePicker(
