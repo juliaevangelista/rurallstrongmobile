@@ -29,6 +29,8 @@ class AutenticaoServico {
         'cnpj': cnpj,
         'nome': nome,
         'celular': celular,
+        'type': 'gerencia',
+        'idFazenda': '',
       });
 
       return null;

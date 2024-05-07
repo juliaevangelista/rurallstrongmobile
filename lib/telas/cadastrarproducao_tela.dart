@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:rurallstrong/servicos/autenticao_servico.dart';
@@ -22,7 +23,7 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
   DateTime _dataInicial = DateTime.now();
   DateTime _dataFinal = DateTime.now();
   final DatabaseReference _producaoRef =
-      FirebaseDatabase.instance.reference().child('producao');
+      FirebaseDatabase.instance.reference().child('Producoes');
 
   @override
   Widget build(BuildContext context) {
@@ -481,37 +482,33 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
     );
   }
 
-  void salvarDadosProducao() {
-    if (_formKey.currentState!.validate()) {
-      // Aqui você pode chamar o método para obter o ID do usuário
-      AutenticaoServico().obterId().then((userId) {
-        if (userId != null) {
-          Map<String, dynamic> data = {
-            'cultivo': _cultivoProducaoController.text,
-            'nomeproducao': _nomeProducaoController.text,
-            'tamanhohectares': _hectaresController.text,
-            'fazenda': _fazendaController.text,
-            'nometalhao': _nometalhaoController.text,
-            'datainicial': _dataInicial.toString(),
-            'datafinal': _dataFinal.toString(),
-            // Adicione outros campos conforme necessário
-          };
+void salvarDadosProducao() {
+  if (_formKey.currentState!.validate()) {
+    Map<String, dynamic> data = {
+      'cultivo': _cultivoProducaoController.text,
+      'nomeproducao': _nomeProducaoController.text,
+      'tamanhohectares': _hectaresController.text,
+      'fazenda': _fazendaController.text,
+      'nometalhao': _nometalhaoController.text,
+      'datainicial': _dataInicial.toString(),
+      'datafinal': _dataFinal.toString(),
+      // Adicione outros campos conforme necessário
+    };
 
-          // Salvando os dados no Realtime Database
-          _producaoRef.child(userId).push().set(data).then((_) {
-            _limparCampos();
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Dados enviados com sucesso!'),
-            ));
-          }).catchError((error) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Erro ao enviar os dados: $error'),
-            ));
-          });
-        }
-      });
-    }
+    // Salvando os dados no Realtime Database sem usar o userId como chave
+    _producaoRef.push().set(data).then((_) {
+      _limparCampos();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Dados enviados com sucesso!'),
+      ));
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Erro ao enviar os dados: $error'),
+      ));
+    });
   }
+}
+
 
   void _selecionarDataInicial() {
     DatePicker.showDatePicker(
