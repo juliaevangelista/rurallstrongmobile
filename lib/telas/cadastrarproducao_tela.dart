@@ -2,7 +2,6 @@
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:rurallstrong/servicos/autenticao_servico.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 

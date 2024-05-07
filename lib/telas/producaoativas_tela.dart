@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:rurallstrong/repositories/producoes_repositorio.dart';
-import 'package:rurallstrong/servicos/autenticao_servico.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:rurallstrong/telas/monitoramento_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
@@ -13,19 +11,8 @@ class ProducaoAtivasTela extends StatefulWidget {
 }
 
 class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
-  String? userId;
-  List<Map<String, dynamic>>? producoes;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchUserId();
-  }
-
-  Future<void> _fetchUserId() async {
-    userId = await AutenticaoServico().obterId();
-    setState(() {}); // Atualiza o estado após obter o ID do usuário
-  }
+  DatabaseReference _producoesRef =
+      FirebaseDatabase.instance.reference().child('Producoes');
 
   @override
   Widget build(BuildContext context) {
@@ -77,35 +64,38 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
             SizedBox(
               height: 20,
             ),
-            if (userId != null)
-              FutureBuilder<List<Map<String, dynamic>>>(
-                future: FirebaseRepository().getFirestoreData('users/$userId/dados_producao'),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    // Exemplo de como usar os dados recuperados
-                    producoes = snapshot.data!;
+            FutureBuilder<DataSnapshot>(
+              future: _producoesRef.once().then((event) => event.snapshot),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  Map<dynamic, dynamic>? producoesData =
+                      (snapshot.data?.value as Map<dynamic, dynamic>?);
+                  if (producoesData != null) {
                     return Column(
                       children: [
-                        for (var producao in producoes!)
+                        for (var producao in producoesData.entries)
                           dados(
                             context,
-                            producao['cultivo'],
-                            producao['datafinal'],
-                            producao['datainicial'],
-                            producao['fazenda'],
-                            producao['nomeproducao'],
-                            producao['nometalhao'],
-                            producao['tamanhohectares'],
+                            producao.value['cultivar'],
+                            producao.value['prevista'],
+                            producao.value['dataInicial'],
+                            producao.value['idFazenda'],
+                            producao.value['name'],
+                            producao.value['talhao'],
+                            producao.value['size'],
                           ),
                       ],
                     );
+                  } else {
+                    return Text('No data available');
                   }
-                },
-              ),
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -114,16 +104,38 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
 
   Widget dados(
     BuildContext context,
-    String cultivo,
-    Timestamp datafinal,
-    Timestamp datainicial,
-    String fazenda,
-    String nomeproducao,
-    String nometalhao,
-    String tamanhohectares,
+    dynamic cultivar,
+    dynamic prevista,
+    dynamic dataInicial,
+    dynamic idFazenda,
+    dynamic name,
+    dynamic talhao,
+    dynamic size,
   ) {
-    String dataFinalFormatada = _formatarData(datafinal.toDate());
-    String dataInicialFormatada = _formatarData(datainicial.toDate());
+// Verificar cultivar
+    String cultivarValue = cultivar != null ? cultivar.toString() : 'N/A';
+
+    // Verificar prevista
+    String previstaValue = prevista != null ? prevista.toString() : 'N/A';
+
+    // Verificar dataInicial
+    String dataInicialValue =
+        dataInicial != null ? dataInicial.toString() : 'N/A';
+
+    // Verificar idFazenda
+    String idFazendaText = idFazenda != null ? idFazenda.toString() : 'N/A';
+
+    // Verificar talhao
+    String talhaoValue = talhao != null ? talhao.toString() : 'N/A';
+
+    // Verificar size
+// Verificar size
+    var sizeValue = size != null
+        ? (size is int
+            ? size.toDouble()
+            : (size is String ? double.tryParse(size) ?? 'N/A' : 'N/A'))
+        : 'N/A';
+
     return GestureDetector(
       onTap: () {
         // Navegar para outra tela aqui
@@ -169,7 +181,7 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
                             ),
                           ),
                           Text(
-                            cultivo,
+                            cultivarValue,
                             style: TextStyle(
                               color: Color.fromRGBO(61, 190, 1, 1),
                               fontSize: 15,
@@ -192,7 +204,7 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
                             ),
                           ),
                           Text(
-                            nometalhao,
+                            talhaoValue,
                             style: TextStyle(
                               color: Color.fromRGBO(61, 190, 1, 1),
                               fontSize: 15,
@@ -221,7 +233,7 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
                         style: TextStyle(color: Colors.black, fontSize: 11),
                       ),
                       Text(
-                        dataInicialFormatada,
+                        dataInicialValue,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
@@ -233,7 +245,7 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
                         style: TextStyle(color: Colors.black, fontSize: 11),
                       ),
                       Text(
-                        dataFinalFormatada,
+                        previstaValue,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
@@ -251,7 +263,7 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
                         style: TextStyle(color: Colors.black, fontSize: 11),
                       ),
                       Text(
-                        tamanhohectares,
+                        '${sizeValue}',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
@@ -263,7 +275,7 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
                         style: TextStyle(color: Colors.black, fontSize: 11),
                       ),
                       Text(
-                        fazenda,
+                        idFazendaText,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
@@ -279,8 +291,5 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
         ),
       ),
     );
-  }
-  String _formatarData(DateTime data) {
-    return "${data.day}/${data.month}/${data.year}";
   }
 }

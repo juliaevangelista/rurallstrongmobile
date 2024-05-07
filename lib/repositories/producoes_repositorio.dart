@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/* import 'package:cloud_firestore/cloud_firestore.dart';
 class FirebaseRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -21,3 +21,4 @@ class FirebaseRepository {
 
   // Outros métodos para adicionar, atualizar ou excluir dados conforme necessário
 }
+ */

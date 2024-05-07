@@ -1,12 +1,10 @@
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rurallstrong/controllers/geolocalizacao_controller.dart';
-import 'package:rurallstrong/servicos/autenticao_servico.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +23,8 @@ class _DaninhasTelaState extends State<DaninhasTela> {
   String localizacao = '';
   String imageUrl = '';
   File? _selectedImage;
+  final DatabaseReference _DaninhasRef =
+      FirebaseDatabase.instance.reference().child('Daninhas');
 
   @override
   Widget build(BuildContext context) {
@@ -302,30 +302,28 @@ class _DaninhasTelaState extends State<DaninhasTela> {
                               ),
                             ),
                             _selectedImage != null
-                                  ? Container(
-                                      width: 100,
-                                      height: 100,
-                                      margin:
-                                          EdgeInsets.fromLTRB(20, 15, 20, 10),
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: FileImage(_selectedImage!),
-                                          fit: BoxFit.cover,
-                                        ),
+                                ? Container(
+                                    width: 100,
+                                    height: 100,
+                                    margin: EdgeInsets.fromLTRB(20, 15, 20, 10),
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: FileImage(_selectedImage!),
+                                        fit: BoxFit.cover,
                                       ),
-                                    )
-                                  : Container(
-                                      width: 100,
-                                      height: 100,
-                                      margin:
-                                          EdgeInsets.fromLTRB(20, 15, 20, 10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.grey[300],
-                                      ),
-                                      child: Icon(Icons.image,
-                                          size: 50, color: Colors.grey),
                                     ),
+                                  )
+                                : Container(
+                                    width: 100,
+                                    height: 100,
+                                    margin: EdgeInsets.fromLTRB(20, 15, 20, 10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey[300],
+                                    ),
+                                    child: Icon(Icons.image,
+                                        size: 50, color: Colors.grey),
+                                  ),
                           ],
                         )))
               ],
@@ -334,38 +332,7 @@ class _DaninhasTelaState extends State<DaninhasTela> {
               //margin: EdgeInsets.only(top: 20),
               child: ElevatedButton(
                 onPressed: () async {
-                  if (imageUrl.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Please upload an image')));
-
-                    return;
-                  }
-                  if (_formKey.currentState!.validate()) {
-                    String localizacaoAtual = await _obterLocalizacao();
-                    String? userId = await AutenticaoServico().obterId();
-                    if (userId != null) {
-                      Map<String, dynamic> data = {
-                        'especie': _especieController.text,
-                      'estagio': _estagioController.text,
-                      'localizacao': localizacaoAtual,
-                      'imageUrl': imageUrl
-                        // Adicione outros campos conforme necessário
-                      };
-                      FirebaseFirestore.instance
-                          .collection('users/$userId/dados_monitoramento_daninhas')
-                          .add(data)
-                          .then((value) {
-                        _limparCampos();
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Dados enviados com sucesso!'),
-                        ));
-                      }).catchError((error) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Erro ao enviar os dados: $error'),
-                        ));
-                      });
-                    }
-                  }
+                 salvarDadosDaninhas();
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.black, // Cor de fundo do botão
@@ -388,6 +355,36 @@ class _DaninhasTelaState extends State<DaninhasTela> {
         ),
       ),
     );
+  }
+
+  void salvarDadosDaninhas() async {
+    if (imageUrl.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Please upload an image')));
+
+      return;
+    }
+    if (_formKey.currentState!.validate()) {
+      String localizacaoAtual = await _obterLocalizacao();
+      Map<String, dynamic> data = {
+        'especie': _especieController.text,
+        'estagio': _estagioController.text,
+        'localizacao': localizacaoAtual,
+        'imageUrl': imageUrl
+      };
+
+      // Salvando os dados no Realtime Database sem usar o userId como chave
+      _DaninhasRef.push().set(data).then((_) {
+        _limparCampos();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Dados enviados com sucesso!'),
+        ));
+      }).catchError((error) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Erro ao enviar os dados: $error'),
+        ));
+      });
+    }
   }
 
   void _limparCampos() {
