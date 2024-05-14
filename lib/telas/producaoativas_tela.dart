@@ -4,14 +4,14 @@ import 'package:rurallstrong/telas/monitoramento_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
 class ProducaoAtivasTela extends StatefulWidget {
-  const ProducaoAtivasTela({Key? key}) : super(key: key);
+  const ProducaoAtivasTela({super.key});
 
   @override
   State<ProducaoAtivasTela> createState() => _ProducaoAtivasTelaState();
 }
 
 class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
-  DatabaseReference _producoesRef =
+  final DatabaseReference _producoesRef =
       FirebaseDatabase.instance.ref().child('Producoes');
 
   @override
@@ -163,7 +163,7 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
         // Navegar para outra tela aqui
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MonitoramentoTela()),
+            MaterialPageRoute(builder: (context) => MonitoramentoTela(name: name, talhao: talhao)),
         );
       },
       child: Container(
