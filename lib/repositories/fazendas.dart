@@ -39,3 +39,25 @@ Future<List<String>> fazenda() async {
     throw error;
   }
 }
+
+Future<String?> getIdFazendaPorNome(String nomeFazenda) async {
+  DatabaseReference fazendaRef = FirebaseDatabase.instance.ref().child('Fazendas');
+
+  try {
+    DatabaseEvent snapshot = await fazendaRef.orderByChild('nomeFazenda').equalTo(nomeFazenda).once();
+
+    if (snapshot.snapshot.value != null) {
+      Map<dynamic, dynamic>? dados = snapshot.snapshot.value as Map<dynamic, dynamic>?;
+
+      if (dados != null) {
+        // Retorna o ID da primeira fazenda encontrada com o nome correspondente
+        return dados.keys.first as String?;
+      }
+    }
+
+    return null;
+  } catch (error) {
+    print('Erro ao obter ID da fazenda por nome do Firebase: $error');
+    throw error;
+  }
+}

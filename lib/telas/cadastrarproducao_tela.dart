@@ -205,43 +205,43 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                                     color: Colors.black,
                                   ),
                                   items: [
-                                      DropdownMenuItem<String>(
-                                        value:
-                                            null, // Valor nulo para o item vazio
-                                        child: Container(
-                                          //alignment: Alignment.center,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 0),
-                                          child: Text(
-                                            'MILHO',
-                                            style:
-                                                TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                                          ),
+                                    DropdownMenuItem<String>(
+                                      value:
+                                          null, // Valor nulo para o item vazio
+                                      child: Container(
+                                        //alignment: Alignment.center,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 0),
+                                        child: Text(
+                                          'MILHO',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ),
-                                      ...nomesCultivos
-                                          .where((nome) => nome.isNotEmpty)
-                                          .map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Container(
-                                              //alignment: Alignment.center,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10, vertical: 0),
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              ),
+                                    ),
+                                    ...nomesCultivos
+                                        .where((nome) => nome.isNotEmpty)
+                                        .map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Container(
+                                            //alignment: Alignment.center,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 0),
+                                            child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                  color: Colors.black),
                                             ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
-                              
+                              ),
                               SizedBox(
                                 height: 10,
                               ),
@@ -391,8 +391,9 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                                               horizontal: 10, vertical: 0),
                                           child: Text(
                                             'PRIMAVERA',
-                                            style:
-                                                TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ),
                                       ),
@@ -461,43 +462,43 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                                     color: Colors.black,
                                   ),
                                   items: [
-                                      DropdownMenuItem<String>(
-                                        value:
-                                            null, // Valor nulo para o item vazio
-                                        child: Container(
-                                          //alignment: Alignment.center,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 0),
-                                          child: Text(
-                                            'TALHÃO 09',
-                                            style:
-                                                TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                                          ),
+                                    DropdownMenuItem<String>(
+                                      value:
+                                          null, // Valor nulo para o item vazio
+                                      child: Container(
+                                        //alignment: Alignment.center,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 0),
+                                        child: Text(
+                                          'TALHÃO 09',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ),
-                                      ...nomesTalhoes
-                                          .where((nome) => nome.isNotEmpty)
-                                          .map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Container(
-                                              //alignment: Alignment.center,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10, vertical: 0),
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              ),
+                                    ),
+                                    ...nomesTalhoes
+                                        .where((nome) => nome.isNotEmpty)
+                                        .map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Container(
+                                            //alignment: Alignment.center,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 0),
+                                            child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                  color: Colors.black),
                                             ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
-                            
+                              ),
                             ],
                           )))
                 ],
@@ -621,30 +622,41 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
     );
   }
 
-  void salvarDadosProducao() {
+  void salvarDadosProducao() async {
     if (_formKey.currentState!.validate()) {
-      Map<String, dynamic> data = {
-        'cultivar': _cultivoProducaoController.text,
-        'name': _nomeProducaoController.text,
-        'size': _hectaresController.text,
-        'idFazenda': _fazendaController.text,
-        'talhao': _nometalhaoController.text,
-        'dataInicial': _dataInicial.toString(),
-        'prevista': _dataFinal.toString(),
-        // Adicione outros campos conforme necessário
-      };
+      String? idFazenda = await getIdFazendaPorNome(_fazendaController.text);
+      String? idTalhao = await getIdTalhaoPorNome(_nometalhaoController.text);
 
-      // Salvando os dados no Realtime Database sem usar o userId como chave
-      _producaoRef.push().set(data).then((_) {
-        _limparCampos();
+      if (idFazenda != null) {
+        Map<String, dynamic> data = {
+          'cultivar': _cultivoProducaoController.text,
+          'name': _nomeProducaoController.text,
+          'size': _hectaresController.text,
+          'nomeFazenda': _fazendaController.text,
+          'idFazenda': idFazenda,
+          'nometalhao': _nometalhaoController.text,
+          'talhao': idTalhao,
+          'dataInicial': _dataInicial.toString(),
+          'prevista': _dataFinal.toString(),
+          // Adicione outros campos conforme necessário
+        };
+
+        // Salvando os dados no Realtime Database sem usar o userId como chave
+        _producaoRef.push().set(data).then((_) {
+          _limparCampos();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Dados enviados com sucesso!'),
+          ));
+        }).catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Erro ao enviar os dados: $error'),
+          ));
+        });
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Dados enviados com sucesso!'),
+          content: Text('Fazenda não encontrada.'),
         ));
-      }).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Erro ao enviar os dados: $error'),
-        ));
-      });
+      }
     }
   }
 
