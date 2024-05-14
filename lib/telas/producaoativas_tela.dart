@@ -64,23 +64,24 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
             SizedBox(
               height: 20,
             ),
-            FutureBuilder<DataSnapshot>(
-              future: _producoesRef.once().then((event) => event.snapshot),
+            StreamBuilder<DatabaseEvent>(
+              stream: _producoesRef.onValue,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
+                  DataSnapshot data = snapshot.data!.snapshot;
                   Map<dynamic, dynamic>? producoesData =
-                      (snapshot.data?.value as Map<dynamic, dynamic>?);
+                      (data.value as Map<dynamic, dynamic>?);
                   if (producoesData != null) {
                     return Column(
                       children: [
                         for (var producao in producoesData.entries)
                           dados(
                             context,
-                            producao.value['cultivar'],
+                            producao.value['name'],
                             producao.value['prevista'],
                             producao.value['dataInicial'],
                             producao.value['idFazenda'],
@@ -116,11 +117,32 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
     String cultivarValue = cultivar != null ? cultivar.toString() : 'N/A';
 
     // Verificar prevista
-    String previstaValue = prevista != null ? prevista.toString() : 'N/A';
+    String previstaValue;
+    if (prevista != null) {
+      if (prevista is String) {
+        DateTime dateTime = DateTime.parse(prevista);
+        previstaValue =
+            '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.year} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+      } else {
+        previstaValue = prevista.toString();
+      }
+    } else {
+      previstaValue = 'N/A';
+    }
 
-    // Verificar dataInicial
-    String dataInicialValue =
-        dataInicial != null ? dataInicial.toString() : 'N/A';
+// Verificar dataInicial
+    String dataInicialValue;
+    if (dataInicial != null) {
+      if (dataInicial is String) {
+        DateTime dateTime = DateTime.parse(dataInicial);
+        dataInicialValue =
+            '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.year} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+      } else {
+        dataInicialValue = dataInicial.toString();
+      }
+    } else {
+      dataInicialValue = 'N/A';
+    }
 
     // Verificar idFazenda
     String idFazendaText = idFazenda != null ? idFazenda.toString() : 'N/A';

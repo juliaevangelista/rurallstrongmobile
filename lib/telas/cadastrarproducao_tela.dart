@@ -2,8 +2,10 @@
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:rurallstrong/repositories/fazendas.dart';
+import 'package:rurallstrong/repositories/talhao.dart';
 import 'package:rurallstrong/telas/telateste.dart';
-//import 'package:rurallstrong/repositories/dados.dart';
+import 'package:rurallstrong/repositories/cultivo.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 
 class CadastrarProducaoTela extends StatefulWidget {
@@ -24,9 +26,52 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
   DateTime _dataFinal = DateTime.now();
   final DatabaseReference _producaoRef =
       FirebaseDatabase.instance.ref().child('Producoes');
-  String _selectedCultivo = 'MILHO'; // Valor inicial do dropdown
-  String _selectedFazenda = 'PRIMAVERA';  // Valor inicial do dropdown
-  String _selectedTalhao = 'TALHÃO 09';  // Valor inicial do dropdown
+  List<String> nomesCultivos = [];
+  List<String> nomesFazendas = [];
+  List<String> nomesTalhoes = [];
+  String _selectedCultivo = ''; // Valor inicial do dropdown
+  String _selectedFazenda = ''; // Valor inicial do dropdown
+  String _selectedTalhao = '';
+  @override
+  void initState() {
+    super.initState();
+    _carregarNomesCultivos();
+    _carregarNomesFazendas();
+    _carregarNomesTalhoes();
+  }
+
+  Future<void> _carregarNomesCultivos() async {
+    try {
+      List<String> nomes = await cultivo();
+      setState(() {
+        nomesCultivos = nomes;
+      });
+    } catch (error) {
+      print('Erro ao carregar nomes de cultivos: $error');
+    }
+  }
+
+  Future<void> _carregarNomesFazendas() async {
+    try {
+      List<String> nomes = await fazenda();
+      setState(() {
+        nomesFazendas = nomes;
+      });
+    } catch (error) {
+      print('Erro ao carregar nomes das Fazendas: $error');
+    }
+  }
+
+  Future<void> _carregarNomesTalhoes() async {
+    try {
+      List<String> nomes = await talhoes();
+      setState(() {
+        nomesTalhoes = nomes;
+      });
+    } catch (error) {
+      print('Erro ao carregar nomes das Fazendas: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,12 +173,17 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(top: 10),
+                                margin: EdgeInsets.only(top: 5),
                                 child: DropdownButtonFormField<String>(
-                                  value: _selectedCultivo,
+                                  value:
+                                      _cultivoProducaoController.text.isNotEmpty
+                                          ? _cultivoProducaoController.text
+                                          : null,
                                   onChanged: (String? newValue) {
                                     setState(() {
                                       _selectedCultivo = newValue!;
+                                      _cultivoProducaoController.text =
+                                          newValue;
                                     });
                                   },
                                   decoration: InputDecoration(
@@ -151,34 +201,47 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                                     ),
                                   ),
                                   icon: ImageIcon(
-                                    AssetImage(
-                                        'assets/icon-button.png'), // Aqui você pode substituir pelo ícone desejado
+                                    AssetImage('assets/icon-button.png'),
                                     color: Colors.black,
                                   ),
-                                  items: <String>[
-                                    'MILHO',
-                                    'CAJU',
-                                    'SOJA',
-                                  ].map<DropdownMenuItem<String>>(
-                                    (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
+                                  items: [
+                                      DropdownMenuItem<String>(
+                                        value:
+                                            null, // Valor nulo para o item vazio
                                         child: Container(
-                                          alignment: Alignment.center,
+                                          //alignment: Alignment.center,
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 1),
+                                              horizontal: 10, vertical: 0),
                                           child: Text(
-                                            value,
+                                            'MILHO',
                                             style:
-                                                TextStyle(color: Colors.black),
+                                                TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                                           ),
                                         ),
-                                      );
-                                    },
-                                  ).toList(),
+                                      ),
+                                      ...nomesCultivos
+                                          .where((nome) => nome.isNotEmpty)
+                                          .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Container(
+                                              //alignment: Alignment.center,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10, vertical: 0),
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                
-                              ),
+                              
                               SizedBox(
                                 height: 10,
                               ),
@@ -286,53 +349,74 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 10),
-                                child: DropdownButtonFormField<String>(
-                                  value: _selectedFazenda,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _selectedFazenda = newValue!;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color.fromRGBO(61, 190, 1, 1),
-                                        width: 2.0,
+                                child: SingleChildScrollView(
+                                  child: DropdownButtonFormField<String>(
+                                    value: _fazendaController.text.isNotEmpty
+                                        ? _fazendaController.text
+                                        : null,
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        _selectedFazenda = newValue!;
+                                        _fazendaController.text = newValue;
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color.fromRGBO(61, 190, 1, 1),
+                                          width: 2.0,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
                                       ),
-                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
                                     ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
+                                    icon: ImageIcon(
+                                      AssetImage(
+                                          'assets/icon-button.png'), // Substitua pelo ícone desejado
+                                      color: Colors.black,
                                     ),
-                                  ),
-                                  icon: ImageIcon(
-                                    AssetImage(
-                                        'assets/icon-button.png'), // Aqui você pode substituir pelo ícone desejado
-                                    color: Colors.black,
-                                  ),
-                                  items: <String>[
-                                    'PRIMAVERA',
-                                    'ESTRELA',
-                                    'BOA VISTA',
-                                  ].map<DropdownMenuItem<String>>(
-                                    (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
+                                    items: [
+                                      DropdownMenuItem<String>(
+                                        value:
+                                            null, // Valor nulo para o item vazio
                                         child: Container(
-                                          alignment: Alignment.center,
+                                          //alignment: Alignment.center,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 0),
                                           child: Text(
-                                            value,
+                                            'PRIMAVERA',
                                             style:
-                                                TextStyle(color: Colors.black),
+                                                TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                                           ),
                                         ),
-                                      );
-                                    },
-                                  ).toList(),
+                                      ),
+                                      ...nomesFazendas
+                                          .where((nome) => nome.isNotEmpty)
+                                          .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Container(
+                                              //alignment: Alignment.center,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10, vertical: 0),
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -348,10 +432,13 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                               Container(
                                 margin: EdgeInsets.only(top: 10),
                                 child: DropdownButtonFormField<String>(
-                                  value: _selectedTalhao,
+                                  value: _nometalhaoController.text.isNotEmpty
+                                      ? _nometalhaoController.text
+                                      : null,
                                   onChanged: (String? newValue) {
                                     setState(() {
                                       _selectedTalhao = newValue!;
+                                      _nometalhaoController.text = newValue;
                                     });
                                   },
                                   decoration: InputDecoration(
@@ -373,29 +460,44 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                                         'assets/icon-button.png'), // Aqui você pode substituir pelo ícone desejado
                                     color: Colors.black,
                                   ),
-                                  items: <String>[
-                                    'TALHÃO 09',
-                                    'TALHÂO 10',
-                                    'TALHÃO 11',
-                                  ].map<DropdownMenuItem<String>>(
-                                    (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
+                                  items: [
+                                      DropdownMenuItem<String>(
+                                        value:
+                                            null, // Valor nulo para o item vazio
                                         child: Container(
-                                          alignment: Alignment.center,
+                                          //alignment: Alignment.center,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 0),
                                           child: Text(
-                                            value,
+                                            'TALHÃO 09',
                                             style:
-                                                TextStyle(color: Colors.black),
+                                                TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                                           ),
                                         ),
-                                      );
-                                    },
-                                  ).toList(),
+                                      ),
+                                      ...nomesTalhoes
+                                          .where((nome) => nome.isNotEmpty)
+                                          .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Container(
+                                              //alignment: Alignment.center,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10, vertical: 0),
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                            
                             ],
                           )))
                 ],
@@ -522,13 +624,13 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
   void salvarDadosProducao() {
     if (_formKey.currentState!.validate()) {
       Map<String, dynamic> data = {
-        'cultivo': _cultivoProducaoController.text,
-        'nomeproducao': _nomeProducaoController.text,
-        'tamanhohectares': _hectaresController.text,
-        'fazenda': _fazendaController.text,
-        'nometalhao': _nometalhaoController.text,
-        'datainicial': _dataInicial.toString(),
-        'datafinal': _dataFinal.toString(),
+        'cultivar': _cultivoProducaoController.text,
+        'name': _nomeProducaoController.text,
+        'size': _hectaresController.text,
+        'idFazenda': _fazendaController.text,
+        'talhao': _nometalhaoController.text,
+        'dataInicial': _dataInicial.toString(),
+        'prevista': _dataFinal.toString(),
         // Adicione outros campos conforme necessário
       };
 
