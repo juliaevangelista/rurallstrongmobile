@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rurallstrong/telas/armadilhas_tela.dart';
+import 'package:rurallstrong/telas/configuracao_tela.dart';
 import 'package:rurallstrong/telas/dados_tela.dart';
 import 'package:rurallstrong/telas/producao_tela.dart';
 import 'package:rurallstrong/telas/talhoes_tela.dart';
@@ -17,7 +18,8 @@ class ButtonData {
 class InicioTela extends StatelessWidget {
   final List<ButtonData> buttons = [
     ButtonData('TAREFAS', 'assets/icon-tarefas.png', TarefasTela()),
-    ButtonData('MONITORAMENTO', 'assets/icon-monitoramento.png', ProducaoTela()),
+    ButtonData(
+        'MONITORAMENTO', 'assets/icon-monitoramento.png', ProducaoTela()),
     ButtonData('ARMADILHAS', 'assets/icon-armadilhas.png', ArmadilhaTela()),
     ButtonData('APLICAÇÕES', 'assets/icon-aplicacoes.png', TelaTeste()),
     ButtonData('ALERTAS', 'assets/icon-alertas.png', TelaTeste()),
@@ -38,6 +40,7 @@ class InicioTela extends StatelessWidget {
             buildGridView(context),
             buildDadosPonto(context),
             buildMonitoramento(),
+            buildButtonConfig(context)
           ],
         ),
       ),
@@ -49,7 +52,7 @@ class InicioTela extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            margin: EdgeInsets.fromLTRB(0 ,25.0,25,0),
+            margin: EdgeInsets.fromLTRB(0, 25.0, 25, 0),
             height: 60,
             alignment: Alignment.center,
             child: Image.asset(
@@ -385,6 +388,33 @@ class InicioTela extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildButtonConfig(context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Container(
+          width: 120,
+          height: 120,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ConfiguracaoTela()),
+              );
+            },
+            child: Image.asset(
+              'assets/icon-alertas.png',
+              fit: BoxFit.contain,
+            ),
+          ),
+        )
+      ],
     );
   }
 }
