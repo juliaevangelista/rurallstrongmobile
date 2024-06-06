@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rurallstrong/telas/talhaoconfig_tela.dart';
+import 'package:rurallstrong/telas/telateste.dart';
 
 class ConfiguracaoTela extends StatefulWidget {
   const ConfiguracaoTela({Key? key}) : super(key: key);
@@ -8,41 +10,48 @@ class ConfiguracaoTela extends StatefulWidget {
 }
 
 class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
+  void _navigateToTeste(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TelaTeste()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 60, 10, 25),
-                    child: Text(
-                      'Configuração',
-                      style: TextStyle(
-                          color: Color.fromRGBO(61, 190, 1, 1), fontSize: 50),
+      backgroundColor: Colors.black,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 60, 10, 25),
+                  child: Text(
+                    'Configuração',
+                    style: TextStyle(
+                      color: Color.fromRGBO(61, 190, 1, 1),
+                      fontSize: 50,
                     ),
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    width: 280,
-                    margin: EdgeInsets.only(right: 30),
-                    child: Column(
-                      children: [
-                        Container(
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  width: 280,
+                  margin: EdgeInsets.only(right: 30),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () => _navigateToTeste(context),
+                        child: Container(
                           child: Column(
                             children: [
-                              /* Divider(
-                                color: Colors.grey[500],
-                                thickness: 1,
-                              ), */
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -67,7 +76,16 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                             ],
                           ),
                         ),
-                        Container(
+                      ),
+                      GestureDetector(
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TalhaoConfigTela()),
+                          )
+                        },
+                        child: Container(
                           child: Column(
                             children: [
                               Row(
@@ -94,7 +112,10 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                             ],
                           ),
                         ),
-                        Container(
+                      ),
+                      GestureDetector(
+                        onTap: () => _navigateToTeste(context),
+                        child: Container(
                           child: Column(
                             children: [
                               Row(
@@ -121,7 +142,10 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                             ],
                           ),
                         ),
-                        Container(
+                      ),
+                      GestureDetector(
+                        onTap: () => _navigateToTeste(context),
+                        child: Container(
                           child: Column(
                             children: [
                               Row(
@@ -148,7 +172,10 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                             ],
                           ),
                         ),
-                        Container(
+                      ),
+                      GestureDetector(
+                        onTap: () => _navigateToTeste(context),
+                        child: Container(
                           child: Column(
                             children: [
                               Row(
@@ -175,7 +202,10 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                             ],
                           ),
                         ),
-                        Container(
+                      ),
+                      GestureDetector(
+                        onTap: () => _navigateToTeste(context),
+                        child: Container(
                           child: Column(
                             children: [
                               Row(
@@ -202,7 +232,10 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                             ],
                           ),
                         ),
-                        Container(
+                      ),
+                      GestureDetector(
+                        onTap: () => _navigateToTeste(context),
+                        child: Container(
                           child: Column(
                             children: [
                               Row(
@@ -229,13 +262,15 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ));
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
