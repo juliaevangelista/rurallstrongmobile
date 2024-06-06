@@ -376,11 +376,11 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                                             BorderRadius.circular(10.0),
                                       ),
                                     ),
-                                    icon: ImageIcon(
+                                    /* icon: ImageIcon(
                                       AssetImage(
                                           'assets/icon-button.png'), // Substitua pelo ícone desejado
                                       color: Colors.black,
-                                    ),
+                                    ), */
                                     items: [
                                       DropdownMenuItem<String>(
                                         value:
@@ -456,11 +456,11 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                   ),
-                                  icon: ImageIcon(
+                                  /* icon: ImageIcon(
                                     AssetImage(
                                         'assets/icon-button.png'), // Aqui você pode substituir pelo ícone desejado
                                     color: Colors.black,
-                                  ),
+                                  ), */
                                   items: [
                                     DropdownMenuItem<String>(
                                       value:

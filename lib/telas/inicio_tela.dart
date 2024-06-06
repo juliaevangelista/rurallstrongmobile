@@ -163,8 +163,8 @@ class InicioTela extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 60,
-              height: 60,
+              width: 62,
+              height: 62,
               decoration: BoxDecoration(
                 color: Colors.black,
                 borderRadius: BorderRadius.circular(8),
@@ -180,7 +180,7 @@ class InicioTela extends StatelessWidget {
               buttons[index].label,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 9.5,
+                fontSize: 8.5,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -409,7 +409,7 @@ class InicioTela extends StatelessWidget {
               );
             },
             child: Image.asset(
-              'assets/icon-alertas.png',
+              'assets/config.jpg',
               fit: BoxFit.contain,
             ),
           ),
