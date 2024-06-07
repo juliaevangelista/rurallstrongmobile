@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:rurallstrong/telas/monitoramento_tela.dart';
+import 'package:rurallstrong/telas/monitoramento/monitoramento_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
 class ProducaoAtivasTela extends StatefulWidget {

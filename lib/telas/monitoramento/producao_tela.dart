@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rurallstrong/telas/cadastrarproducao_tela.dart';
-import 'package:rurallstrong/telas/producaoativas_tela.dart';
+import 'package:rurallstrong/telas/monitoramento/cadastrarproducao_tela.dart';
+import 'package:rurallstrong/telas/monitoramento/producaoativas_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
 class ProducaoTela extends StatefulWidget {

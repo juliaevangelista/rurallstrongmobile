@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rurallstrong/telas/atualizartarefas_tela.dart';
+import 'package:rurallstrong/telas/tarefas/atualizartarefas_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
 class TarefasTela extends StatefulWidget {

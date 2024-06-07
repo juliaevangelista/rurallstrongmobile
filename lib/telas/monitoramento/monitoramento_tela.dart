@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rurallstrong/telas/daninhas_tela.dart';
-import 'package:rurallstrong/telas/doencas_tela.dart';
-import 'package:rurallstrong/telas/pragas_tela.dart';
+import 'package:rurallstrong/telas/monitoramento/daninhas_tela.dart';
+import 'package:rurallstrong/telas/monitoramento/doencas_tela.dart';
+import 'package:rurallstrong/telas/monitoramento/pragas_tela.dart';
 //import 'package:rural_strong/telas/telateste.dart';
 
 class MonitoramentoTela extends StatefulWidget {

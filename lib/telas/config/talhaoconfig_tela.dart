@@ -42,7 +42,7 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                   height: 65,
                   margin: EdgeInsets.fromLTRB(20, 15, 20, 7),
                   child: Image.asset(
-                    'assets/icon-talhoes.png',
+                    'assets/icon-app.png',
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -71,12 +71,12 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
             height: 20,
           ),
           Container(
-            width: 350,
-            height: 200,
+            width: 300,
+            height: 220,
             padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(15),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey,
@@ -92,13 +92,26 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('icon'),
-                    Text('NOME'),
-                    Text('TALHAO8'),
-                    Text('TAMANHO HECTARES'),
-                    Text('125,5'),
-                    Text('FAZENDA'),
-                    Text('FAZENDA PRIMAVERA'),
+                    Container(
+                      height: 60,
+                      width: 60,
+                      child: Image.asset(
+                        'assets/icon-talhoes.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    Text('NOME', style: TextStyle(fontSize: 11,),),
+                    SizedBox(height: 2,),
+                    Text('TALHAO8',style: TextStyle(fontWeight: FontWeight.bold,)),
+                    SizedBox(height: 2,),
+                    Text('TAMANHO HECTARES', style: TextStyle(fontSize: 11,),),
+                    SizedBox(height: 2,),
+                    Text('125,5',style: TextStyle(fontWeight: FontWeight.bold,)),
+                    SizedBox(height: 2,),
+                    Text('FAZENDA', style: TextStyle(fontSize: 11,),),
+                    SizedBox(height: 2,),
+                    Text('FAZENDA PRIMAVERA',style: TextStyle(fontWeight: FontWeight.bold,)),
+                    SizedBox(height: 2,),
                   ],
                 ),
                 SizedBox(
@@ -107,10 +120,37 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ElevatedButton(onPressed: () {}, child: Text('EDITAR')),
-                    ElevatedButton(onPressed: () {}, child: Text('EXCLUIR')),
-                    Text('COD'),
-                    Text('0002')
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text('EDITAR'),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.black, // Cor de fundo do botão
+                        backgroundColor: Color.fromRGBO(61, 190, 1,
+                            1), // Cor do texto do botão quando pressionado
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              10.0), // Borda arredondada do botão
+                        ),
+                        fixedSize: Size(110, 30),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text('EXCLUIR'),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white, // Cor de fundo do botão
+                        backgroundColor: Color.fromRGBO(255, 0, 0, 1), // Cor do texto do botão quando pressionado
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              10.0), // Borda arredondada do botão
+                        ),
+                        fixedSize: Size(110, 30),
+                      ),
+                    ),
+                    SizedBox(height: 15,),
+                    Text('COD.', style: TextStyle(fontSize: 11,),),
+                    SizedBox(height: 2,),
+                    Text('0002', style: TextStyle(fontWeight: FontWeight.bold,))
                   ],
                 ),
               ],
@@ -136,14 +176,14 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                   thickness: 1.5,
                 ),
               ),
-              SizedBox(
-                height: 10,
-              )
             ],
           )),
+          SizedBox(
+            height: 30,
+          ),
           Container(
-            width: 350,
-            height: 250,
+            width: 340,
+            height: 210,
             padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
             decoration: BoxDecoration(
               color: Colors.grey[300],
@@ -155,13 +195,18 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('icon'),
-                    Text('NOME'),
-                    Text('TALHAO8'),
-                    Text('TAMANHO HECTARES'),
-                    Text('125,5'),
-                    Text('FAZENDA'),
-                    Text('FAZENDA PRIMAVERA'),
+                    Text('DATA INICIAL', style: TextStyle(fontSize: 11,),),
+                    SizedBox(height: 2,),
+                    Text('21/02/2024',style: TextStyle(fontWeight: FontWeight.bold,)),
+                    SizedBox(height: 2,),
+                    Text('DATA FINAL', style: TextStyle(fontSize: 11,),),
+                    SizedBox(height: 2,),
+                    Text('04/04/2024',style: TextStyle(fontWeight: FontWeight.bold,)),
+                    SizedBox(height: 2,),
+                    Text('NOME', style: TextStyle(fontSize: 11,),),
+                    SizedBox(height: 2,),
+                    Text('MILHO 14H BAYER',style: TextStyle(fontWeight: FontWeight.bold,)),
+                    SizedBox(height: 2,),
                     ElevatedButton(
                       onPressed: () {},
                       child: Text('EDITAR'),
@@ -173,6 +218,7 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                           borderRadius: BorderRadius.circular(
                               10.0), // Borda arredondada do botão
                         ),
+                        fixedSize: Size(110, 30),
                       ),
                     ),
                   ],
@@ -183,23 +229,29 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('icon'),
-                    Text('NOME'),
-                    Text('TALHAO8'),
-                    Text('TAMANHO HECTARES'),
-                    Text('125,5'),
-                    Text('FAZENDA'),
-                    Text('FAZENDA PRIMAVERA'),
+                    Text('NOME', style: TextStyle(fontSize: 11,),),
+                    SizedBox(height: 2,),
+                    Text('TALHAO8',style: TextStyle(fontWeight: FontWeight.bold,)),
+                    SizedBox(height: 2,),
+                    Text('TAMANHO HECTARES', style: TextStyle(fontSize: 11,),),
+                    SizedBox(height: 2,),
+                    Text('125,5',style: TextStyle(fontWeight: FontWeight.bold,)),
+                    SizedBox(height: 2,),
+                    Text('FAZENDA', style: TextStyle(fontSize: 11,),),
+                    SizedBox(height: 2,),
+                    Text('FAZENDA PRIMAVERA',style: TextStyle(fontWeight: FontWeight.bold,)),
+                    SizedBox(height: 2,),
                     ElevatedButton(
                       onPressed: () {},
                       child: Text('EXCLUIR'),
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white, // Cor de fundo do botão
-                        backgroundColor: Colors.red, // Cor do texto do botão quando pressionado
+                        backgroundColor: Color.fromRGBO(255, 0, 0, 1), // Cor do texto do botão quando pressionado
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                               10.0), // Borda arredondada do botão
                         ),
+                        fixedSize: Size(110, 30),
                       ),
                     ),
                   ],
@@ -207,17 +259,21 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
               ],
             ),
           ),
+          SizedBox(
+            height: 25,
+          ),
           ElevatedButton(
             onPressed: () {},
-            child: Text('NOVA PRODUÇÃO'),
+            child: Text('NOVA PRODUÇÃO', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),),
             style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.black, // Cor de fundo do botão
+              foregroundColor: Colors.black, 
               backgroundColor: Color.fromRGBO(
-                  61, 190, 1, 1), // Cor do texto do botão quando pressionado
+                  61, 190, 1, 1),
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(10.0), // Borda arredondada do botão
               ),
+              fixedSize: Size(220, 45),
             ),
           ),
         ],

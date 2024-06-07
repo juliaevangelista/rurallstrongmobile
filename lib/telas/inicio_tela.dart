@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:rurallstrong/telas/armadilhas_tela.dart';
-import 'package:rurallstrong/telas/configuracao_tela.dart';
+import 'package:rurallstrong/telas/armadilhas/armadilhas_tela.dart';
+import 'package:rurallstrong/telas/config/configuracao_tela.dart';
 import 'package:rurallstrong/telas/dados_tela.dart';
-import 'package:rurallstrong/telas/producao_tela.dart';
+import 'package:rurallstrong/telas/monitoramento/producao_tela.dart';
 import 'package:rurallstrong/telas/talhoes_tela.dart';
-import 'package:rurallstrong/telas/tarefas_tela.dart';
+import 'package:rurallstrong/telas/tarefas/tarefas_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
 class ButtonData {

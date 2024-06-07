@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rurallstrong/telas/form_armadilha_tela.dart';
+import 'package:rurallstrong/telas/armadilhas/form_armadilha_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 import 'package:rurallstrong/controllers/geolocalizacao_controller.dart';
 import 'package:provider/provider.dart';
