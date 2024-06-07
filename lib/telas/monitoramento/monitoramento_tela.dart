@@ -7,8 +7,21 @@ import 'package:rurallstrong/telas/monitoramento/pragas_tela.dart';
 class MonitoramentoTela extends StatefulWidget {
   final String name;
   final String talhao;
+  final String cultivar;
+  final String prevista;
+  final String dataInicial;
+  final String size;
+  final String idFazenda;
 
-  const MonitoramentoTela({super.key, required this.name, required this.talhao});
+  const MonitoramentoTela(
+      {super.key,
+      required this.name,
+      required this.talhao,
+      required this.cultivar,
+      required this.prevista,
+      required this.dataInicial,
+      required this.size,
+      required this.idFazenda});
 
   @override
   State<MonitoramentoTela> createState() => _MonitoramentoTelaState();
@@ -44,78 +57,27 @@ class _MonitoramentoTelaState extends State<MonitoramentoTela> {
             ),
           ),
           Container(
-                width: 350,
-                height: 160,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
+            width: 350,
+            height: 160,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 330,
-                          height: 55,
-                          margin: EdgeInsets.only(top: 10),
-                          padding: EdgeInsets.only(top: 7),
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'NOME',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(61, 190, 1, 1),
-                                        fontSize: 11),
-                                  ),
-                                  Text(
-                                    widget.name,
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(61, 190, 1, 1),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w900),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 90,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'TALHÃO',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(61, 190, 1, 1),
-                                        fontSize: 11),
-                                  ),
-                                  Text(
-                                    widget.talhao,
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(61, 190, 1, 1),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w900),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
                     Container(
+                      width: 330,
+                      height: 55,
+                      margin: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(top: 7),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -123,56 +85,36 @@ class _MonitoramentoTelaState extends State<MonitoramentoTela> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'DATA INICIAL',
+                                'NOME',
                                 style: TextStyle(
-                                    color: Colors.black, fontSize: 11),
+                                    color: Color.fromRGBO(61, 190, 1, 1),
+                                    fontSize: 11),
                               ),
                               Text(
-                                '21/02/2024',
+                                widget.name,
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w900),
-                              ),
-                              Text(
-                                'DATA FINAL',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 11),
-                              ),
-                              Text(
-                                '04/04/2024',
-                                style: TextStyle(
-                                    color: Colors.black,
+                                    color: Color.fromRGBO(61, 190, 1, 1),
                                     fontSize: 15,
                                     fontWeight: FontWeight.w900),
                               ),
                             ],
                           ),
-                          SizedBox(width: 20),
+                          SizedBox(
+                            width: 90,
+                          ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'PLANTANDO HÉCTARES',
+                                'TALHÃO',
                                 style: TextStyle(
-                                    color: Colors.black, fontSize: 11),
+                                    color: Color.fromRGBO(61, 190, 1, 1),
+                                    fontSize: 11),
                               ),
                               Text(
-                                '125,5',
+                                widget.talhao,
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w900),
-                              ),
-                              Text(
-                                'FAZENDA',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 11),
-                              ),
-                              Text(
-                                'FAZENDA PRIMAVERA',
-                                style: TextStyle(
-                                    color: Colors.black,
+                                    color: Color.fromRGBO(61, 190, 1, 1),
                                     fontSize: 15,
                                     fontWeight: FontWeight.w900),
                               ),
@@ -183,7 +125,74 @@ class _MonitoramentoTelaState extends State<MonitoramentoTela> {
                     ),
                   ],
                 ),
-              ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'DATA INICIAL',
+                            style: TextStyle(color: Colors.black, fontSize: 11),
+                          ),
+                          Text(
+                            widget.dataInicial,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w900),
+                          ),
+                          Text(
+                            'DATA FINAL',
+                            style: TextStyle(color: Colors.black, fontSize: 11),
+                          ),
+                          Text(
+                            widget.prevista,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w900),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'PLANTANDO HÉCTARES',
+                            style: TextStyle(color: Colors.black, fontSize: 11),
+                          ),
+                          Text(
+                            '${widget.size}',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w900),
+                          ),
+                          Text(
+                            'FAZENDA',
+                            style: TextStyle(color: Colors.black, fontSize: 11),
+                          ),
+                          Text(
+                            widget.idFazenda,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w900),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
           SizedBox(
             height: 20,
           ),

@@ -113,7 +113,7 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
     dynamic talhao,
     dynamic size,
   ) {
-// Verificar cultivar
+    // Verificar cultivar
     String cultivarValue = cultivar != null ? cultivar.toString() : 'N/A';
 
     // Verificar prevista
@@ -130,7 +130,7 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
       previstaValue = 'N/A';
     }
 
-// Verificar dataInicial
+    // Verificar dataInicial
     String dataInicialValue;
     if (dataInicial != null) {
       if (dataInicial is String) {
@@ -151,44 +151,128 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
     String talhaoValue = talhao != null ? talhao.toString() : 'N/A';
 
     // Verificar size
-// Verificar size
-    var sizeValue = size != null
-        ? (size is int
-            ? size.toDouble()
-            : (size is String ? double.tryParse(size) ?? 'N/A' : 'N/A'))
-        : 'N/A';
+    String getSizeValue(dynamic size) {
+      if (size != null) {
+        if (size is int) {
+          return size.toString();
+        } else if (size is String) {
+          double? doubleValue = double.tryParse(size);
+          if (doubleValue != null) {
+            return doubleValue.toString();
+          } else {
+            return 'N/A';
+          }
+        } else {
+          return 'N/A';
+        }
+      } else {
+        return 'N/A';
+      }
+    }
 
     return GestureDetector(
       onTap: () {
         // Navegar para outra tela aqui
         Navigator.push(
           context,
-            MaterialPageRoute(builder: (context) => MonitoramentoTela(name: name, talhao: talhao)),
+          MaterialPageRoute(
+              builder: (context) => MonitoramentoTela(
+                    name: name,
+                    talhao: talhao,
+                    cultivar: cultivarValue,
+                    prevista: previstaValue,
+                    dataInicial: dataInicialValue,
+                    idFazenda: idFazendaText,
+                    size: getSizeValue(size),
+                  )),
         );
       },
       child: Container(
         margin: EdgeInsets.all(10),
         width: 350,
-        height: 160,
+        height: 175,
+        padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Colors.grey[200],
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Column(
               children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 330,
+                      height: 60,
+                      margin: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'NOME',
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(61, 190, 1, 1),
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                Text(
+                                  cultivarValue,
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(61, 190, 1, 1),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 90,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'TALHÃO',
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(61, 190, 1, 1),
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                Text(
+                                  talhaoValue,
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(61, 190, 1, 1),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
                 Container(
-                  width: 330,
-                  height: 55,
-                  margin: EdgeInsets.only(top: 10),
-                  padding: EdgeInsets.only(top: 7),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -196,39 +280,55 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'NOME',
+                            'DATA INICIAL',
+                            style: TextStyle(color: Colors.black, fontSize: 11),
+                          ),
+                          Text(
+                            dataInicialValue,
                             style: TextStyle(
-                              color: Color.fromRGBO(61, 190, 1, 1),
-                              fontSize: 11,
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
                           Text(
-                            cultivarValue,
+                            'DATA FINAL',
+                            style: TextStyle(color: Colors.black, fontSize: 11),
+                          ),
+                          Text(
+                            previstaValue,
                             style: TextStyle(
-                              color: Color.fromRGBO(61, 190, 1, 1),
+                              color: Colors.black,
                               fontSize: 15,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(
-                        width: 90,
-                      ),
+                      SizedBox(width: 50),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'TALHÃO',
+                            'PLANTANDO HÉCTARES',
+                            style: TextStyle(color: Colors.black, fontSize: 11),
+                          ),
+                          Text(
+                            getSizeValue(size),
                             style: TextStyle(
-                              color: Color.fromRGBO(61, 190, 1, 1),
-                              fontSize: 11,
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
                           Text(
-                            talhaoValue,
+                            'FAZENDA',
+                            style: TextStyle(color: Colors.black, fontSize: 11),
+                          ),
+                          Text(
+                            idFazendaText,
                             style: TextStyle(
-                              color: Color.fromRGBO(61, 190, 1, 1),
+                              color: Colors.black,
                               fontSize: 15,
                               fontWeight: FontWeight.w900,
                             ),
@@ -240,76 +340,7 @@ class _ProducaoAtivasTelaState extends State<ProducaoAtivasTela> {
                 ),
               ],
             ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'DATA INICIAL',
-                        style: TextStyle(color: Colors.black, fontSize: 11),
-                      ),
-                      Text(
-                        dataInicialValue,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      Text(
-                        'DATA FINAL',
-                        style: TextStyle(color: Colors.black, fontSize: 11),
-                      ),
-                      Text(
-                        previstaValue,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 50),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'PLANTANDO HÉCTARES',
-                        style: TextStyle(color: Colors.black, fontSize: 11),
-                      ),
-                      Text(
-                        '${sizeValue}',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      Text(
-                        'FAZENDA',
-                        style: TextStyle(color: Colors.black, fontSize: 11),
-                      ),
-                      Text(
-                        idFazendaText,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

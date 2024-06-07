@@ -29,8 +29,8 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
   List<String> nomesCultivos = [];
   List<String> nomesFazendas = [];
   List<String> nomesTalhoes = [];
-  String _selectedCultivo = ''; // Valor inicial do dropdown
-  String _selectedFazenda = ''; // Valor inicial do dropdown
+  String _selectedCultivo = ''; 
+  String _selectedFazenda = '';
   String _selectedTalhao = '';
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
         nomesTalhoes = nomes;
       });
     } catch (error) {
-      print('Erro ao carregar nomes das Fazendas: $error');
+      print('Erro ao carregar nomes das Talhoes: $error');
     }
   }
 
@@ -158,7 +158,6 @@ class _CadastrarProducaoTelaState extends State<CadastrarProducaoTela> {
                     height: 8,
                   ),
                   Container(
-                      //margin: EdgeInsets.only(top: 60),
                       padding: const EdgeInsets.all(30),
                       child: Form(
                           key: _formKey,
