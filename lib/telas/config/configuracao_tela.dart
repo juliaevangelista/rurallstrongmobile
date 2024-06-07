@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rurallstrong/telas/config/colaboradorconfig_tela.dart';
+import 'package:rurallstrong/telas/config/fazendaconfig_tela.dart';
+import 'package:rurallstrong/telas/config/fornecedorconfig_tela.dart';
+import 'package:rurallstrong/telas/config/producaoconfig_tela.dart';
+import 'package:rurallstrong/telas/config/setoresconfig_tela.dart';
 import 'package:rurallstrong/telas/config/talhaoconfig_tela.dart';
+import 'package:rurallstrong/telas/config/veiculoconfig_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
 class ConfiguracaoTela extends StatefulWidget {
@@ -48,7 +54,13 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                   child: Column(
                     children: [
                       GestureDetector(
-                        onTap: () => _navigateToTeste(context),
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ColaboradorConfigTela()),
+                          )
+                        },
                         child: Container(
                           child: Column(
                             children: [
@@ -114,7 +126,13 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => _navigateToTeste(context),
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => VeiculoConfigTela()),
+                          )
+                        },
                         child: Container(
                           child: Column(
                             children: [
@@ -144,7 +162,13 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => _navigateToTeste(context),
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SetoresConfigTela()),
+                          )
+                        },
                         child: Container(
                           child: Column(
                             children: [
@@ -174,7 +198,13 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => _navigateToTeste(context),
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProducaoConfigTela()),
+                          )
+                        },
                         child: Container(
                           child: Column(
                             children: [
@@ -204,7 +234,13 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => _navigateToTeste(context),
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FornecedorConfigTela()),
+                          )
+                        },
                         child: Container(
                           child: Column(
                             children: [
@@ -234,7 +270,13 @@ class _ConfiguracaoTelaState extends State<ConfiguracaoTela> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => _navigateToTeste(context),
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FazendaConfigTela()),
+                          )
+                        },
                         child: Container(
                           child: Column(
                             children: [

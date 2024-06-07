@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
-class TalhaoConfigTela extends StatefulWidget {
-  const TalhaoConfigTela({Key? key}) : super(key: key);
+class ProducaoConfigTela extends StatefulWidget {
+  const ProducaoConfigTela({Key? key}) : super(key: key);
 
   @override
-  State<TalhaoConfigTela> createState() => _TalhaoConfigTelaState();
+  State<ProducaoConfigTela> createState() => _ProducaoConfigTelaState();
 }
 
-class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
+class _ProducaoConfigTelaState extends State<ProducaoConfigTela> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +35,7 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                   ),
                 ),
                 SizedBox(
-                  width: 20,
+                  width: 10,
                 ),
                 Container(
                   width: 65,
@@ -47,7 +47,7 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                   ),
                 ),
                 SizedBox(
-                  width: 10,
+                  width: 0,
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -61,8 +61,8 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                       );
                     },
                     child: Text(
-                      'TALHÃO',
-                      style: TextStyle(fontSize: 19),
+                      'PRODUCÃO',
+                      style: TextStyle(fontSize: 16),
                     )),
               ],
             ),
@@ -166,7 +166,7 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                 width: 20,
               ),
               Text(
-                'TALHÕES',
+                'PRODUÇÔES',
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 20),
@@ -264,7 +264,7 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
           ),
           ElevatedButton(
             onPressed: () {},
-            child: Text('NOVO TALHÃO', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),),
+            child: Text('NOVA PRODUÇÃO', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),),
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.black, 
               backgroundColor: Color.fromRGBO(
@@ -273,7 +273,7 @@ class _TalhaoConfigTelaState extends State<TalhaoConfigTela> {
                 borderRadius:
                     BorderRadius.circular(10.0), // Borda arredondada do botão
               ),
-              fixedSize: Size(220, 45),
+              fixedSize: Size(270, 45),
             ),
           ),
         ],
