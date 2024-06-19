@@ -10,7 +10,7 @@ class SetoresListaTela extends StatefulWidget {
 }
 
 class _SetoresListaTelaState extends State<SetoresListaTela> {
-  final DatabaseReference _talhoesRef = FirebaseDatabase.instance.ref().child('Talhoes');
+  final DatabaseReference _setoresRef = FirebaseDatabase.instance.ref().child('Setores');
 
   @override
   Widget build(BuildContext context) {
@@ -53,25 +53,26 @@ class _SetoresListaTelaState extends State<SetoresListaTela> {
                     width: 10,
                   ),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Color.fromRGBO(61, 190, 1, 1),
-                        backgroundColor: Color.fromRGBO(61, 190, 1, 0),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => TelaTeste()),
-                        );
-                      },
-                      child: Text(
-                        'TALHÃO',
-                        style: TextStyle(fontSize: 19),
-                      )),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Color.fromRGBO(61, 190, 1, 1),
+                      backgroundColor: Color.fromRGBO(61, 190, 1, 0),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TelaTeste()),
+                      );
+                    },
+                    child: Text(
+                      'TALHÃO',
+                      style: TextStyle(fontSize: 19),
+                    ),
+                  ),
                 ],
               ),
             ),
             StreamBuilder<DatabaseEvent>(
-              stream: _talhoesRef.onValue,
+              stream: _setoresRef.onValue,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -79,17 +80,17 @@ class _SetoresListaTelaState extends State<SetoresListaTela> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   DataSnapshot data = snapshot.data!.snapshot;
-                  Map<dynamic, dynamic>? talhoesData = data.value as Map<dynamic, dynamic>?;
-                  if (talhoesData != null) {
-                    List<Widget> talhaoContainers = [];
-                    for (var talhao in talhoesData.entries) {
-                      talhaoContainers.add(
-                        talhaoContainer(
+                  Map<dynamic, dynamic>? setoresData = data.value as Map<dynamic, dynamic>?;
+                  if (setoresData != null) {
+                    List<Widget> setoresContainers = [];
+                    for (var setor in setoresData.entries) {
+                      setoresContainers.add(
+                        setoresContainer(
                           context,
-                          talhao.value['name'],
-                          talhao.value['size'],
-                          talhao.value['idFazenda'],
-                          talhao.value['chave'],
+                          setor.value['titulo'],
+                          setor.value['descricao'],
+                          setor.value['idFazenda'],
+                          setor.value['chave'],
                         ),
                       );
                     }
@@ -97,7 +98,7 @@ class _SetoresListaTelaState extends State<SetoresListaTela> {
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      children: talhaoContainers,
+                      children: setoresContainers,
                     );
                   } else {
                     return Text('No data available');
@@ -111,24 +112,24 @@ class _SetoresListaTelaState extends State<SetoresListaTela> {
     );
   }
 
-  Widget talhaoContainer(
+  Widget setoresContainer(
     BuildContext context,
-    dynamic name,
-    dynamic tamanhoHectares,
-    dynamic fazenda,
-    dynamic cod,
+    dynamic titulo,
+    dynamic descricao,
+    dynamic idFazenda,
+    dynamic chave,
   ) {
-    // Verificar name
-    String nameValue = name != null ? name.toString() : 'N/A';
+    // Verificar titulo
+    String tituloValue = titulo != null ? titulo.toString() : 'N/A';
 
-    // Verificar tamanhoHectares
-    String tamanhoHectaresValue = tamanhoHectares != null ? tamanhoHectares.toString() : 'N/A';
+    // Verificar descricao
+    String descricaoValue = descricao != null ? descricao.toString() : 'N/A';
 
-    // Verificar fazenda
-    String fazendaValue = fazenda != null ? fazenda.toString() : 'N/A';
+    // Verificar idFazenda
+    String idFazendaValue = idFazenda != null ? idFazenda.toString() : 'N/A';
 
-    // Verificar cod
-    String codValue = cod != null ? cod.toString() : 'N/A';
+    // Verificar chave
+    String chaveValue = chave != null ? chave.toString() : 'N/A';
 
     return Container(
       width: 150,
@@ -166,14 +167,14 @@ class _SetoresListaTelaState extends State<SetoresListaTela> {
                     ),
                   ),
                   Text(
-                    'NOME',
+                    'TÍTULO',
                     style: TextStyle(
                       fontSize: 8,
                     ),
                   ),
                   SizedBox(height: 2),
                   Text(
-                    nameValue,
+                    tituloValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
@@ -181,14 +182,14 @@ class _SetoresListaTelaState extends State<SetoresListaTela> {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    'TAMANHO HECTARES',
+                    'DESCRIÇÃO',
                     style: TextStyle(
                       fontSize: 8,
                     ),
                   ),
                   SizedBox(height: 2),
                   Text(
-                    tamanhoHectaresValue,
+                    descricaoValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
@@ -196,14 +197,14 @@ class _SetoresListaTelaState extends State<SetoresListaTela> {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    'FAZENDA',
+                    'ID FAZENDA',
                     style: TextStyle(
                       fontSize: 8,
                     ),
                   ),
                   SizedBox(height: 2),
                   Text(
-                    fazendaValue,
+                    idFazendaValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
@@ -217,14 +218,14 @@ class _SetoresListaTelaState extends State<SetoresListaTela> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'COD.',
+                    'CHAVE',
                     style: TextStyle(
                       fontSize: 8,
                     ),
                   ),
                   SizedBox(height: 2),
                   Text(
-                    codValue,
+                    chaveValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
