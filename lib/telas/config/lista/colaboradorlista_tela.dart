@@ -10,7 +10,7 @@ class ColaboradorListaTela extends StatefulWidget {
 }
 
 class _ColaboradorListaTelaState extends State<ColaboradorListaTela> {
-  final DatabaseReference _talhoesRef = FirebaseDatabase.instance.ref().child('Talhoes');
+  final DatabaseReference _colaboradorRef = FirebaseDatabase.instance.ref().child('Funcionarios');
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +64,14 @@ class _ColaboradorListaTelaState extends State<ColaboradorListaTela> {
                         );
                       },
                       child: Text(
-                        'TALHÃO',
+                        'COLABORADOR',
                         style: TextStyle(fontSize: 19),
                       )),
                 ],
               ),
             ),
             StreamBuilder<DatabaseEvent>(
-              stream: _talhoesRef.onValue,
+              stream: _colaboradorRef.onValue,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -79,17 +79,21 @@ class _ColaboradorListaTelaState extends State<ColaboradorListaTela> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   DataSnapshot data = snapshot.data!.snapshot;
-                  Map<dynamic, dynamic>? talhoesData = data.value as Map<dynamic, dynamic>?;
-                  if (talhoesData != null) {
-                    List<Widget> talhaoContainers = [];
-                    for (var talhao in talhoesData.entries) {
-                      talhaoContainers.add(
-                        talhaoContainer(
+                  Map<dynamic, dynamic>? colaboradorData = data.value as Map<dynamic, dynamic>?;
+                  if (colaboradorData != null) {
+                    List<Widget> colaboradorContainers = [];
+                    for (var colaborador in colaboradorData.entries) {
+                      colaboradorContainers.add(
+                        colaboradorContainer(
                           context,
-                          talhao.value['name'],
-                          talhao.value['size'],
-                          talhao.value['idFazenda'],
-                          talhao.value['chave'],
+                          colaborador.value['nome'],
+                          colaborador.value['codigo'],
+                          colaborador.value['cpf'],
+                          colaborador.value['email'],
+                          colaborador.value['setor'],
+                          colaborador.value['rg'],
+                          colaborador.value['password'],
+                          colaborador.value['endereco'],
                         ),
                       );
                     }
@@ -97,7 +101,7 @@ class _ColaboradorListaTelaState extends State<ColaboradorListaTela> {
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      children: talhaoContainers,
+                      children: colaboradorContainers,
                     );
                   } else {
                     return Text('No data available');
@@ -111,24 +115,40 @@ class _ColaboradorListaTelaState extends State<ColaboradorListaTela> {
     );
   }
 
-  Widget talhaoContainer(
+  Widget colaboradorContainer(
     BuildContext context,
-    dynamic name,
-    dynamic tamanhoHectares,
-    dynamic fazenda,
-    dynamic cod,
+    dynamic nome,
+    dynamic codigo,
+    dynamic cpf,
+    dynamic email,
+    dynamic setor,
+    dynamic rg,
+    dynamic password,
+    dynamic endereco,
   ) {
-    // Verificar name
-    String nameValue = name != null ? name.toString() : 'N/A';
+    // Verificar nome
+    String nomeValue = nome != null ? nome.toString() : 'N/A';
 
-    // Verificar tamanhoHectares
-    String tamanhoHectaresValue = tamanhoHectares != null ? tamanhoHectares.toString() : 'N/A';
+    // Verificar codigo
+    String codigoValue = codigo != null ? codigo.toString() : 'N/A';
 
-    // Verificar fazenda
-    String fazendaValue = fazenda != null ? fazenda.toString() : 'N/A';
+    // Verificar cpf
+    String cpfValue = cpf != null ? cpf.toString() : 'N/A';
 
-    // Verificar cod
-    String codValue = cod != null ? cod.toString() : 'N/A';
+    // Verificar email
+    String emailValue = email != null ? email.toString() : 'N/A';
+
+    // Verificar setor
+    String setorValue = setor != null ? setor.toString() : 'N/A';
+
+    // Verificar rg
+    String rgValue = rg != null ? rg.toString() : 'N/A';
+
+    // Verificar password
+    String passwordValue = password != null ? password.toString() : 'N/A';
+
+    // Verificar endereco
+    String enderecoValue = endereco != null ? endereco.toString() : 'N/A';
 
     return Container(
       width: 150,
@@ -173,7 +193,7 @@ class _ColaboradorListaTelaState extends State<ColaboradorListaTela> {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    nameValue,
+                    nomeValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
@@ -188,7 +208,7 @@ class _ColaboradorListaTelaState extends State<ColaboradorListaTela> {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    tamanhoHectaresValue,
+                    codigoValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
@@ -196,14 +216,29 @@ class _ColaboradorListaTelaState extends State<ColaboradorListaTela> {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    'FAZENDA',
+                    'CPF',
                     style: TextStyle(
                       fontSize: 8,
                     ),
                   ),
                   SizedBox(height: 2),
                   Text(
-                    fazendaValue,
+                    cpfValue,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'EMAIL',
+                    style: TextStyle(
+                      fontSize: 8,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    emailValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
@@ -217,14 +252,59 @@ class _ColaboradorListaTelaState extends State<ColaboradorListaTela> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'COD.',
+                    'SETOR',
                     style: TextStyle(
                       fontSize: 8,
                     ),
                   ),
                   SizedBox(height: 2),
                   Text(
-                    codValue,
+                    setorValue,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'RG',
+                    style: TextStyle(
+                      fontSize: 8,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    rgValue,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'PASSWORD',
+                    style: TextStyle(
+                      fontSize: 8,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    passwordValue,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'ENDEREÇO',
+                    style: TextStyle(
+                      fontSize: 8,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    enderecoValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
