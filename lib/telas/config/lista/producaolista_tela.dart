@@ -10,7 +10,7 @@ class ProducaoListaTela extends StatefulWidget {
 }
 
 class _ProducaoListaTelaState extends State<ProducaoListaTela> {
-  final DatabaseReference _talhoesRef = FirebaseDatabase.instance.ref().child('Talhoes');
+  final DatabaseReference _producaoRef = FirebaseDatabase.instance.ref().child('Producoes');
 
   @override
   Widget build(BuildContext context) {
@@ -53,25 +53,26 @@ class _ProducaoListaTelaState extends State<ProducaoListaTela> {
                     width: 10,
                   ),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Color.fromRGBO(61, 190, 1, 1),
-                        backgroundColor: Color.fromRGBO(61, 190, 1, 0),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => TelaTeste()),
-                        );
-                      },
-                      child: Text(
-                        'TALHÃO',
-                        style: TextStyle(fontSize: 19),
-                      )),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Color.fromRGBO(61, 190, 1, 1),
+                      backgroundColor: Color.fromRGBO(61, 190, 1, 0),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TelaTeste()),
+                      );
+                    },
+                    child: Text(
+                      'TALHÃO',
+                      style: TextStyle(fontSize: 19),
+                    ),
+                  ),
                 ],
               ),
             ),
             StreamBuilder<DatabaseEvent>(
-              stream: _talhoesRef.onValue,
+              stream: _producaoRef.onValue,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -79,17 +80,20 @@ class _ProducaoListaTelaState extends State<ProducaoListaTela> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   DataSnapshot data = snapshot.data!.snapshot;
-                  Map<dynamic, dynamic>? talhoesData = data.value as Map<dynamic, dynamic>?;
-                  if (talhoesData != null) {
-                    List<Widget> talhaoContainers = [];
-                    for (var talhao in talhoesData.entries) {
-                      talhaoContainers.add(
-                        talhaoContainer(
+                  Map<dynamic, dynamic>? producaoData = data.value as Map<dynamic, dynamic>?;
+                  if (producaoData != null) {
+                    List<Widget> producaoContainers = [];
+                    for (var producao in producaoData.entries) {
+                      producaoContainers.add(
+                        producaoContainer(
                           context,
-                          talhao.value['name'],
-                          talhao.value['size'],
-                          talhao.value['idFazenda'],
-                          talhao.value['chave'],
+                          producao.value['name'],
+                          producao.value['size'],
+                          producao.value['idFazenda'],
+                          producao.value['chave'],
+                          producao.value['cultivar'],
+                          producao.value['semente'],
+                          producao.value['talhao'],
                         ),
                       );
                     }
@@ -97,7 +101,7 @@ class _ProducaoListaTelaState extends State<ProducaoListaTela> {
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      children: talhaoContainers,
+                      children: producaoContainers,
                     );
                   } else {
                     return Text('No data available');
@@ -111,24 +115,36 @@ class _ProducaoListaTelaState extends State<ProducaoListaTela> {
     );
   }
 
-  Widget talhaoContainer(
+  Widget producaoContainer(
     BuildContext context,
     dynamic name,
-    dynamic tamanhoHectares,
-    dynamic fazenda,
-    dynamic cod,
+    dynamic size,
+    dynamic idFazenda,
+    dynamic chave,
+    dynamic cultivar,
+    dynamic semente,
+    dynamic talhao,
   ) {
     // Verificar name
     String nameValue = name != null ? name.toString() : 'N/A';
 
-    // Verificar tamanhoHectares
-    String tamanhoHectaresValue = tamanhoHectares != null ? tamanhoHectares.toString() : 'N/A';
+    // Verificar size
+    String sizeValue = size != null ? size.toString() : 'N/A';
 
-    // Verificar fazenda
-    String fazendaValue = fazenda != null ? fazenda.toString() : 'N/A';
+    // Verificar idFazenda
+    String idFazendaValue = idFazenda != null ? idFazenda.toString() : 'N/A';
 
-    // Verificar cod
-    String codValue = cod != null ? cod.toString() : 'N/A';
+    // Verificar chave
+    String chaveValue = chave != null ? chave.toString() : 'N/A';
+
+    // Verificar cultivar
+    String cultivarValue = cultivar != null ? cultivar.toString() : 'N/A';
+
+    // Verificar semente
+    String sementeValue = semente != null ? semente.toString() : 'N/A';
+
+    // Verificar talhao
+    String talhaoValue = talhao != null ? talhao.toString() : 'N/A';
 
     return Container(
       width: 150,
@@ -149,91 +165,81 @@ class _ProducaoListaTelaState extends State<ProducaoListaTela> {
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 30,
-                    width: 30,
-                    child: Image.asset(
-                      'assets/icon-talhoes.png',
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  Text(
-                    'NOME',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    nameValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    'TAMANHO HECTARES',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    tamanhoHectaresValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    'FAZENDA',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    fazendaValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 30,
+              width: 30,
+              child: Image.asset(
+                'assets/icon-talhoes.png',
+                fit: BoxFit.contain,
               ),
-              SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'COD.',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    codValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'NOME',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              nameValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'TAMANHO (HECTARES)',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              sizeValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'FAZENDA',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              idFazendaValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'CHAVE',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              chaveValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'CULTIVAR',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              cultivarValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'SEMENTE',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              sementeValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'TALHÃO',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              talhaoValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+          ],
         ),
       ),
     );
