@@ -10,7 +10,7 @@ class VeiculoListaTela extends StatefulWidget {
 }
 
 class _VeiculoListaTelaState extends State<VeiculoListaTela> {
-  final DatabaseReference _talhoesRef = FirebaseDatabase.instance.ref().child('Talhoes');
+  final DatabaseReference _veiculoRef = FirebaseDatabase.instance.ref().child('Veiculos');
 
   @override
   Widget build(BuildContext context) {
@@ -53,25 +53,26 @@ class _VeiculoListaTelaState extends State<VeiculoListaTela> {
                     width: 10,
                   ),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Color.fromRGBO(61, 190, 1, 1),
-                        backgroundColor: Color.fromRGBO(61, 190, 1, 0),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => TelaTeste()),
-                        );
-                      },
-                      child: Text(
-                        'TALHÃO',
-                        style: TextStyle(fontSize: 19),
-                      )),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Color.fromRGBO(61, 190, 1, 1),
+                      backgroundColor: Color.fromRGBO(61, 190, 1, 0),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TelaTeste()),
+                      );
+                    },
+                    child: Text(
+                      'VEICULO',
+                      style: TextStyle(fontSize: 19),
+                    ),
+                  ),
                 ],
               ),
             ),
             StreamBuilder<DatabaseEvent>(
-              stream: _talhoesRef.onValue,
+              stream: _veiculoRef.onValue,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -79,17 +80,19 @@ class _VeiculoListaTelaState extends State<VeiculoListaTela> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   DataSnapshot data = snapshot.data!.snapshot;
-                  Map<dynamic, dynamic>? talhoesData = data.value as Map<dynamic, dynamic>?;
-                  if (talhoesData != null) {
-                    List<Widget> talhaoContainers = [];
-                    for (var talhao in talhoesData.entries) {
-                      talhaoContainers.add(
-                        talhaoContainer(
+                  Map<dynamic, dynamic>? veiculoData = data.value as Map<dynamic, dynamic>?;
+                  if (veiculoData != null) {
+                    List<Widget> veiculoContainers = [];
+                    for (var veiculo in veiculoData.entries) {
+                      veiculoContainers.add(
+                        veiculoContainer(
                           context,
-                          talhao.value['name'],
-                          talhao.value['size'],
-                          talhao.value['idFazenda'],
-                          talhao.value['chave'],
+                          veiculo.value['nome'],
+                          veiculo.value['combustivel'],
+                          veiculo.value['idFazenda'],
+                          veiculo.value['modelo'],
+                          veiculo.value['placa'],
+                          veiculo.value['setor'],
                         ),
                       );
                     }
@@ -97,7 +100,7 @@ class _VeiculoListaTelaState extends State<VeiculoListaTela> {
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      children: talhaoContainers,
+                      children: veiculoContainers,
                     );
                   } else {
                     return Text('No data available');
@@ -111,24 +114,32 @@ class _VeiculoListaTelaState extends State<VeiculoListaTela> {
     );
   }
 
-  Widget talhaoContainer(
+  Widget veiculoContainer(
     BuildContext context,
-    dynamic name,
-    dynamic tamanhoHectares,
-    dynamic fazenda,
-    dynamic cod,
+    dynamic nome,
+    dynamic combustivel,
+    dynamic idFazenda,
+    dynamic modelo,
+    dynamic placa,
+    dynamic setor,
   ) {
-    // Verificar name
-    String nameValue = name != null ? name.toString() : 'N/A';
+    // Verificar nome
+    String nomeValue = nome != null ? nome.toString() : 'N/A';
 
-    // Verificar tamanhoHectares
-    String tamanhoHectaresValue = tamanhoHectares != null ? tamanhoHectares.toString() : 'N/A';
+    // Verificar combustivel
+    String combustivelValue = combustivel != null ? combustivel.toString() : 'N/A';
 
-    // Verificar fazenda
-    String fazendaValue = fazenda != null ? fazenda.toString() : 'N/A';
+    // Verificar idFazenda
+    String idFazendaValue = idFazenda != null ? idFazenda.toString() : 'N/A';
 
-    // Verificar cod
-    String codValue = cod != null ? cod.toString() : 'N/A';
+    // Verificar modelo
+    String modeloValue = modelo != null ? modelo.toString() : 'N/A';
+
+    // Verificar placa
+    String placaValue = placa != null ? placa.toString() : 'N/A';
+
+    // Verificar setor
+    String setorValue = setor != null ? setor.toString() : 'N/A';
 
     return Container(
       width: 150,
@@ -173,7 +184,7 @@ class _VeiculoListaTelaState extends State<VeiculoListaTela> {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    nameValue,
+                    nomeValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
@@ -181,14 +192,14 @@ class _VeiculoListaTelaState extends State<VeiculoListaTela> {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    'TAMANHO HECTARES',
+                    'COMBUSTÍVEL',
                     style: TextStyle(
                       fontSize: 8,
                     ),
                   ),
                   SizedBox(height: 2),
                   Text(
-                    tamanhoHectaresValue,
+                    combustivelValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
@@ -196,14 +207,14 @@ class _VeiculoListaTelaState extends State<VeiculoListaTela> {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    'FAZENDA',
+                    'ID FAZENDA',
                     style: TextStyle(
                       fontSize: 8,
                     ),
                   ),
                   SizedBox(height: 2),
                   Text(
-                    fazendaValue,
+                    idFazendaValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
@@ -217,14 +228,44 @@ class _VeiculoListaTelaState extends State<VeiculoListaTela> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'COD.',
+                    'MODELO',
                     style: TextStyle(
                       fontSize: 8,
                     ),
                   ),
                   SizedBox(height: 2),
                   Text(
-                    codValue,
+                    modeloValue,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'PLACA',
+                    style: TextStyle(
+                      fontSize: 8,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    placaValue,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'SETOR',
+                    style: TextStyle(
+                      fontSize: 8,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    setorValue,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
