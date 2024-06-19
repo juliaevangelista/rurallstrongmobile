@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rurallstrong/telas/config/lista/fornecedorlista_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
 class FornecedorConfigTela extends StatefulWidget {
@@ -70,6 +71,14 @@ class _FornecedorConfigTelaState extends State<FornecedorConfigTela> {
           SizedBox(
             height: 20,
           ),
+          GestureDetector(
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FornecedorListaTela()),
+              )
+            },
+            child:
           Container(
             width: 300,
             height: 220,
@@ -155,7 +164,7 @@ class _FornecedorConfigTelaState extends State<FornecedorConfigTela> {
                 ),
               ],
             ),
-          ),
+          ),),
           SizedBox(
             height: 20,
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rurallstrong/repositories/talhao.dart';
-import 'package:rurallstrong/telas/config/talhaolista_tela.dart';
+import 'package:rurallstrong/telas/config/lista/talhaolista_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
 class TalhaoConfigTela extends StatefulWidget {
