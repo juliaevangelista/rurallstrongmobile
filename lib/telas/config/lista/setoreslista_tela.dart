@@ -64,7 +64,7 @@ class _SetoresListaTelaState extends State<SetoresListaTela> {
                       );
                     },
                     child: Text(
-                      'TALHÃO',
+                      'SETORES',
                       style: TextStyle(fontSize: 19),
                     ),
                   ),

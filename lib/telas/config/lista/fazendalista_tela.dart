@@ -10,7 +10,7 @@ class FazendaListaTela extends StatefulWidget {
 }
 
 class _FazendaListaTelaState extends State<FazendaListaTela> {
-  final DatabaseReference _talhoesRef = FirebaseDatabase.instance.ref().child('Talhoes');
+  final DatabaseReference _fazendaRef = FirebaseDatabase.instance.ref().child('Fazendas');
 
   @override
   Widget build(BuildContext context) {
@@ -53,25 +53,26 @@ class _FazendaListaTelaState extends State<FazendaListaTela> {
                     width: 10,
                   ),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Color.fromRGBO(61, 190, 1, 1),
-                        backgroundColor: Color.fromRGBO(61, 190, 1, 0),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => TelaTeste()),
-                        );
-                      },
-                      child: Text(
-                        'TALHÃO',
-                        style: TextStyle(fontSize: 19),
-                      )),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Color.fromRGBO(61, 190, 1, 1),
+                      backgroundColor: Color.fromRGBO(61, 190, 1, 0),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TelaTeste()),
+                      );
+                    },
+                    child: Text(
+                      'FAZENDAS',
+                      style: TextStyle(fontSize: 19),
+                    ),
+                  ),
                 ],
               ),
             ),
             StreamBuilder<DatabaseEvent>(
-              stream: _talhoesRef.onValue,
+              stream: _fazendaRef.onValue,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -79,17 +80,18 @@ class _FazendaListaTelaState extends State<FazendaListaTela> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   DataSnapshot data = snapshot.data!.snapshot;
-                  Map<dynamic, dynamic>? talhoesData = data.value as Map<dynamic, dynamic>?;
-                  if (talhoesData != null) {
-                    List<Widget> talhaoContainers = [];
-                    for (var talhao in talhoesData.entries) {
-                      talhaoContainers.add(
-                        talhaoContainer(
+                  Map<dynamic, dynamic>? fazendaData = data.value as Map<dynamic, dynamic>?;
+                  if (fazendaData != null) {
+                    List<Widget> fazendaContainers = [];
+                    for (var fazenda in fazendaData.entries) {
+                      fazendaContainers.add(
+                        fazendaContainer(
                           context,
-                          talhao.value['name'],
-                          talhao.value['size'],
-                          talhao.value['idFazenda'],
-                          talhao.value['chave'],
+                          fazenda.value['nomeFazenda'],
+                          fazenda.value['endereco'],
+                          fazenda.value['hectares'],
+                          fazenda.value['idFazenda'],
+                          fazenda.value['idProprietario'],
                         ),
                       );
                     }
@@ -97,7 +99,7 @@ class _FazendaListaTelaState extends State<FazendaListaTela> {
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      children: talhaoContainers,
+                      children: fazendaContainers,
                     );
                   } else {
                     return Text('No data available');
@@ -111,24 +113,20 @@ class _FazendaListaTelaState extends State<FazendaListaTela> {
     );
   }
 
-  Widget talhaoContainer(
+  Widget fazendaContainer(
     BuildContext context,
-    dynamic name,
-    dynamic tamanhoHectares,
-    dynamic fazenda,
-    dynamic cod,
+    dynamic nomeFazenda,
+    dynamic endereco,
+    dynamic hectares,
+    dynamic idFazenda,
+    dynamic idProprietario,
   ) {
-    // Verificar name
-    String nameValue = name != null ? name.toString() : 'N/A';
-
-    // Verificar tamanhoHectares
-    String tamanhoHectaresValue = tamanhoHectares != null ? tamanhoHectares.toString() : 'N/A';
-
-    // Verificar fazenda
-    String fazendaValue = fazenda != null ? fazenda.toString() : 'N/A';
-
-    // Verificar cod
-    String codValue = cod != null ? cod.toString() : 'N/A';
+    // Verificar e converter para String ou 'N/A' se nulo
+    String nomeFazendaValue = nomeFazenda != null ? nomeFazenda.toString() : 'N/A';
+    String enderecoValue = endereco != null ? endereco.toString() : 'N/A';
+    String hectaresValue = hectares != null ? hectares.toString() : 'N/A';
+    String idFazendaValue = idFazenda != null ? idFazenda.toString() : 'N/A';
+    String idProprietarioValue = idProprietario != null ? idProprietario.toString() : 'N/A';
 
     return Container(
       width: 150,
@@ -149,91 +147,63 @@ class _FazendaListaTelaState extends State<FazendaListaTela> {
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 30,
-                    width: 30,
-                    child: Image.asset(
-                      'assets/icon-talhoes.png',
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  Text(
-                    'NOME',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    nameValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    'TAMANHO HECTARES',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    tamanhoHectaresValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    'FAZENDA',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    fazendaValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 30,
+              width: 30,
+              child: Image.asset(
+                'assets/icon-talhoes.png',
+                fit: BoxFit.contain,
               ),
-              SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'COD.',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    codValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'NOME',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              nomeFazendaValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'ENDEREÇO',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              enderecoValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'HECTARES',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              hectaresValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'ID FAZENDA',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              idFazendaValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'ID PROPRIETÁRIO',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              idProprietarioValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+          ],
         ),
       ),
     );

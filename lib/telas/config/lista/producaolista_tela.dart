@@ -64,7 +64,7 @@ class _ProducaoListaTelaState extends State<ProducaoListaTela> {
                       );
                     },
                     child: Text(
-                      'TALHÃO',
+                      'PRODUCAO',
                       style: TextStyle(fontSize: 19),
                     ),
                   ),
