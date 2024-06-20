@@ -10,7 +10,7 @@ class FornecedorListaTela extends StatefulWidget {
 }
 
 class _FornecedorListaTelaState extends State<FornecedorListaTela> {
-  final DatabaseReference _talhoesRef = FirebaseDatabase.instance.ref().child('Talhoes');
+  final DatabaseReference _fornecedorRef = FirebaseDatabase.instance.ref().child('Fornecedores');
 
   @override
   Widget build(BuildContext context) {
@@ -53,25 +53,26 @@ class _FornecedorListaTelaState extends State<FornecedorListaTela> {
                     width: 10,
                   ),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Color.fromRGBO(61, 190, 1, 1),
-                        backgroundColor: Color.fromRGBO(61, 190, 1, 0),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => TelaTeste()),
-                        );
-                      },
-                      child: Text(
-                        'TALHÃO',
-                        style: TextStyle(fontSize: 19),
-                      )),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Color.fromRGBO(61, 190, 1, 1),
+                      backgroundColor: Color.fromRGBO(61, 190, 1, 0),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TelaTeste()),
+                      );
+                    },
+                    child: Text(
+                      'FORNECEDOR',
+                      style: TextStyle(fontSize: 19),
+                    ),
+                  ),
                 ],
               ),
             ),
             StreamBuilder<DatabaseEvent>(
-              stream: _talhoesRef.onValue,
+              stream: _fornecedorRef.onValue,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -79,17 +80,21 @@ class _FornecedorListaTelaState extends State<FornecedorListaTela> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   DataSnapshot data = snapshot.data!.snapshot;
-                  Map<dynamic, dynamic>? talhoesData = data.value as Map<dynamic, dynamic>?;
-                  if (talhoesData != null) {
-                    List<Widget> talhaoContainers = [];
-                    for (var talhao in talhoesData.entries) {
-                      talhaoContainers.add(
-                        talhaoContainer(
+                  Map<dynamic, dynamic>? fornecedorData = data.value as Map<dynamic, dynamic>?;
+                  if (fornecedorData != null) {
+                    List<Widget> fornecedorContainers = [];
+                    for (var fornecedor in fornecedorData.entries) {
+                      fornecedorContainers.add(
+                        fornecedorContainer(
                           context,
-                          talhao.value['name'],
-                          talhao.value['size'],
-                          talhao.value['idFazenda'],
-                          talhao.value['chave'],
+                          fornecedor.value['nome'],
+                          fornecedor.value['razaoSocial'],
+                          fornecedor.value['idFazenda'],
+                          fornecedor.value['endereco'],
+                          fornecedor.value['cep'],
+                          fornecedor.value['email'],
+                          fornecedor.value['cnpj'],
+                          fornecedor.value['telefone'],
                         ),
                       );
                     }
@@ -97,7 +102,7 @@ class _FornecedorListaTelaState extends State<FornecedorListaTela> {
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      children: talhaoContainers,
+                      children: fornecedorContainers,
                     );
                   } else {
                     return Text('No data available');
@@ -111,24 +116,26 @@ class _FornecedorListaTelaState extends State<FornecedorListaTela> {
     );
   }
 
-  Widget talhaoContainer(
+  Widget fornecedorContainer(
     BuildContext context,
-    dynamic name,
-    dynamic tamanhoHectares,
-    dynamic fazenda,
-    dynamic cod,
+    dynamic nome,
+    dynamic razaoSocial,
+    dynamic idFazenda,
+    dynamic endereco,
+    dynamic cep,
+    dynamic email,
+    dynamic cnpj,
+    dynamic telefone,
   ) {
-    // Verificar name
-    String nameValue = name != null ? name.toString() : 'N/A';
-
-    // Verificar tamanhoHectares
-    String tamanhoHectaresValue = tamanhoHectares != null ? tamanhoHectares.toString() : 'N/A';
-
-    // Verificar fazenda
-    String fazendaValue = fazenda != null ? fazenda.toString() : 'N/A';
-
-    // Verificar cod
-    String codValue = cod != null ? cod.toString() : 'N/A';
+    // Verificar e converter para String ou 'N/A' se nulo
+    String nomeValue = nome != null ? nome.toString() : 'N/A';
+    String razaoSocialValue = razaoSocial != null ? razaoSocial.toString() : 'N/A';
+    String idFazendaValue = idFazenda != null ? idFazenda.toString() : 'N/A';
+    String enderecoValue = endereco != null ? endereco.toString() : 'N/A';
+    String cepValue = cep != null ? cep.toString() : 'N/A';
+    String emailValue = email != null ? email.toString() : 'N/A';
+    String cnpjValue = cnpj != null ? cnpj.toString() : 'N/A';
+    String telefoneValue = telefone != null ? telefone.toString() : 'N/A';
 
     return Container(
       width: 150,
@@ -149,91 +156,90 @@ class _FornecedorListaTelaState extends State<FornecedorListaTela> {
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 30,
-                    width: 30,
-                    child: Image.asset(
-                      'assets/icon-talhoes.png',
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  Text(
-                    'NOME',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    nameValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    'TAMANHO HECTARES',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    tamanhoHectaresValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    'FAZENDA',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    fazendaValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 30,
+              width: 30,
+              child: Image.asset(
+                'assets/icon-talhoes.png',
+                fit: BoxFit.contain,
               ),
-              SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'COD.',
-                    style: TextStyle(
-                      fontSize: 8,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    codValue,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'NOME',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              nomeValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'RAZÃO SOCIAL',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              razaoSocialValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'FAZENDA',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              idFazendaValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'ENDEREÇO',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              enderecoValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'CEP',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              cepValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'EMAIL',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              emailValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'CNPJ',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              cnpjValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'TELEFONE',
+              style: TextStyle(fontSize: 8),
+            ),
+            Text(
+              telefoneValue,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+          ],
         ),
       ),
     );
