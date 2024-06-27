@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rurallstrong/repositories/talhao.dart';
 import 'package:rurallstrong/telas/armadilhas/form_armadilha_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 import 'package:rurallstrong/controllers/geolocalizacao_controller.dart';
@@ -13,6 +14,26 @@ class ArmadilhaTela extends StatefulWidget {
 
 class _ArmadilhaTelaState extends State<ArmadilhaTela> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<String> nomesTalhoes = [];
+  String _selectedTalhao = '';
+  TextEditingController _nometalhaoController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarNomesTalhoes();
+  }
+
+  Future<void> _carregarNomesTalhoes() async {
+    try {
+      List<String> nomes = await talhoes();
+      setState(() {
+        nomesTalhoes = nomes;
+      });
+    } catch (error) {
+      print('Erro ao carregar nomes das Talhoes: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,57 +100,56 @@ class _ArmadilhaTelaState extends State<ArmadilhaTela> {
 
   Widget _buildForm() {
     return Container(
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'TALHÃO',
-                    style: TextStyle(color: Colors.black, fontSize: 13),
+      margin: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'TALHÃO',
+              style: TextStyle(color: Colors.black, fontSize: 13),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              child: DropdownButtonFormField<String>(
+                value: _selectedTalhao.isNotEmpty ? _selectedTalhao : null,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedTalhao = newValue!;
+                  });
+                },
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color.fromRGBO(61, 190, 1, 1),
+                      width: 2.0,
+                    ),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'TALHÃO 09',
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w900,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(61, 190, 1, 1),
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8.0),
-                          ),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 7.0),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        suffixIcon: ImageIcon(
-                          AssetImage('assets/icon-button.png'),
-                          color: Colors.black,
-                        ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                items: nomesTalhoes
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                      child: Text(
+                        value,
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
-                  ),
-                ],
+                  );
+                }).toList(),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -19,8 +19,8 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
           children: [
             cabecalho(),
             SizedBox(height: 20),
-            construirContainer('1202202', 'ASSUNTO 12/02/2024', '12/02/2024', 'SIM',
-                'KSKSKSKSKKSKS', 'SIM', 'SOJA', 'MATUTINO'),
+            construirContainer('1202202', 'ASSUNTO 12/02/2024', '12/02/2024',
+                'SIM', 'KSKSKSKSKKSKS', 'SIM', 'SOJA', 'MATUTINO'),
             rodape(),
           ],
         ),
@@ -74,8 +74,15 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
     );
   }
 
-  Widget construirContainer(String id, String titulo, String data, String urgente,
-      String descricao, String talhao, String producao, String periodo) {
+  Widget construirContainer(
+      String id,
+      String titulo,
+      String data,
+      String urgente,
+      String descricao,
+      String talhao,
+      String producao,
+      String periodo) {
     return Container(
       width: 400,
       height: 500,
@@ -89,7 +96,8 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
         children: [
           linhaSuperior(id),
           SizedBox(height: 10),
-          detalhesTarefa(titulo, data, urgente, descricao, talhao, producao, periodo),
+          detalhesTarefa(
+              titulo, data, urgente, descricao, talhao, producao, periodo),
           SizedBox(height: 15),
           campoTexto(),
           SizedBox(height: 15),
@@ -147,8 +155,8 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
     );
   }
 
-  Widget detalhesTarefa(String titulo, String data, String urgente, String descricao,
-      String talhao, String producao, String periodo) {
+  Widget detalhesTarefa(String titulo, String data, String urgente,
+      String descricao, String talhao, String producao, String periodo) {
     return Row(
       children: [
         colunaDetalhes(titulo, data, urgente, descricao),
@@ -158,7 +166,8 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
     );
   }
 
-  Widget colunaDetalhes(String primeiro, String segundo, String terceiro, String quarto) {
+  Widget colunaDetalhes(
+      String primeiro, String segundo, String terceiro, String quarto) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -193,18 +202,23 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
     return Container(
       margin: EdgeInsets.only(top: 10, left: 10, right: 10),
       child: TextFormField(
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 19,
+        ),
         decoration: InputDecoration(
           labelText: '',
           labelStyle: TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
           ),
           filled: true,
           fillColor: Colors.white,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
+          contentPadding:
+              EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
           floatingLabelBehavior: FloatingLabelBehavior.never,
         ),
       ),
@@ -339,7 +353,10 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
         ),
         fixedSize: Size(210, 50),
       ),
-      child: Text(texto),
+      child: Text(
+        texto,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
     );
   }
 

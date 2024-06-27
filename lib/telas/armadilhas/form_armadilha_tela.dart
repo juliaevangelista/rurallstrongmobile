@@ -307,6 +307,9 @@ class _MonitorarTelaState extends State<MonitorarTela> {
                                       XFile? file = await imagePicker.pickImage(
                                           source: ImageSource.camera);
                                       if (file == null) return;
+                                      setState(() {
+                                        _selectedImage = File(file.path);
+                                      });
                                       String uniqueFileName = DateTime.now()
                                           .millisecondsSinceEpoch
                                           .toString();
@@ -385,7 +388,7 @@ class _MonitorarTelaState extends State<MonitorarTela> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                               content: Text(
-                                                  'Please upload an image')));
+                                                  'Por favor, envie uma imagem')));
 
                                       return;
                                     }
@@ -396,11 +399,11 @@ class _MonitorarTelaState extends State<MonitorarTela> {
                                           await AutenticaoServico().obterId();
                                       if (userId != null) {
                                         Map<String, dynamic> data = {
-                                        'cultivo': _cultivoController.text,
-                                        'especie': _especieController.text,
-                                        'estagio': _estagioController.text,
-                                        'localizacao': localizacaoAtual,
-                                        'imageUrl': imageUrl
+                                          'cultivo': _cultivoController.text,
+                                          'especie': _especieController.text,
+                                          'estagio': _estagioController.text,
+                                          'localizacao': localizacaoAtual,
+                                          'imageUrl': imageUrl
                                           // Adicione outros campos conforme necessário
                                         };
                                         FirebaseFirestore.instance
@@ -458,6 +461,10 @@ class _MonitorarTelaState extends State<MonitorarTela> {
     _cultivoController.clear();
     _especieController.clear();
     _estagioController.clear();
+    setState(() {
+      _selectedImage = null;
+      imageUrl = '';
+    });
   }
 
   Widget Geolocalizador(BuildContext context) {

@@ -3,20 +3,18 @@ import 'package:firebase_database/firebase_database.dart';
 
 class AutenticaoServico {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final DatabaseReference _usersRef =
-      FirebaseDatabase.instance.reference().child('users');
+  final DatabaseReference _usersRef = FirebaseDatabase.instance.reference().child('users');
 
   Future<String?> cadastrarUsuario({
     required String email,
     required String senha,
-    required String cnpj,
-    required String cpf,
+    String? cnpj,
+    String? cpf,
     required String nome,
     required String celular,
   }) async {
     try {
-      UserCredential userCredential =
-          await _firebaseAuth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: senha,
       );
@@ -25,8 +23,8 @@ class AutenticaoServico {
 
       await _usersRef.child(userId).set({
         'email': email,
-        'cpf': cpf,
-        'cnpj': cnpj,
+        'cpf': cpf ?? '',
+        'cnpj': cnpj ?? '',
         'nome': nome,
         'celular': celular,
         'type': 'gerencia',
@@ -42,11 +40,15 @@ class AutenticaoServico {
     }
   }
 
-  Future<String?> logarUsuarios(
-      {required String email, required String senha}) async {
+  Future<String?> logarUsuarios({
+    required String email,
+    required String senha,
+  }) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: senha);
+        email: email,
+        password: senha,
+      );
       return null;
     } on FirebaseAuthException catch (e) {
       return e.message;
