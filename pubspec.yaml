@@ -41,6 +41,7 @@ dependencies:
   flutter_datetime_picker_plus: ^2.2.0
   firebase_database: ^10.5.4
   flutter_screenutil: ^5.9.3
+  mask_text_input_formatter: ^2.9.0
 
 
   # The following adds the Cupertino Icons font to your application.
