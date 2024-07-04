@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rurallstrong/telas/config/lista/colaboradorlista_tela.dart';
+import 'package:rurallstrong/telas/inicio_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
 class ColaboradorConfigTela extends StatefulWidget {
@@ -26,15 +27,23 @@ class _ColaboradorConfigTelaState extends State<ColaboradorConfigTela> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 65,
-                  height: 65,
-                  margin: EdgeInsets.fromLTRB(20, 15, 20, 7),
-                  child: Image.asset(
-                    'assets/APLICATIVO-17.png',
-                    fit: BoxFit.contain,
+                GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => InicioTela()),
+                      );
+                    },
+                    child: Container(
+                      width: 65,
+                      height: 65,
+                      margin: EdgeInsets.fromLTRB(20, 15, 20, 7),
+                      child: Image.asset(
+                        'assets/APLICATIVO-17.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
                   ),
-                ),
                 SizedBox(
                   width: 10,
                 ),

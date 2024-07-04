@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rurallstrong/controllers/geolocalizacao_controller.dart';
 import 'package:rurallstrong/servicos/autenticao_servico.dart';
+import 'package:rurallstrong/telas/inicio_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 import 'package:provider/provider.dart';
 
@@ -42,13 +43,21 @@ class _DoencasTelaState extends State<DoencasTela> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 65,
-                    height: 65,
-                    margin: EdgeInsets.fromLTRB(20, 15, 20, 7),
-                    child: Image.asset(
-                      'assets/APLICATIVO-17.png',
-                      fit: BoxFit.contain,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => InicioTela()),
+                      );
+                    },
+                    child: Container(
+                      width: 65,
+                      height: 65,
+                      margin: EdgeInsets.fromLTRB(20, 15, 20, 7),
+                      child: Image.asset(
+                        'assets/APLICATIVO-17.png',
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                   SizedBox(

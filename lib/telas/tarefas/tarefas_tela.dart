@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rurallstrong/telas/inicio_tela.dart';
 import 'package:rurallstrong/telas/tarefas/atualizartarefas_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
@@ -26,13 +27,21 @@ class _TarefasTelaState extends State<TarefasTela> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 65,
-                    height: 65,
-                    margin: EdgeInsets.fromLTRB(20, 15, 20, 7),
-                    child: Image.asset(
-                      'assets/APLICATIVO-17.png',
-                      fit: BoxFit.contain,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => InicioTela()),
+                      );
+                    },
+                    child: Container(
+                      width: 65,
+                      height: 65,
+                      margin: EdgeInsets.fromLTRB(20, 15, 20, 7),
+                      child: Image.asset(
+                        'assets/APLICATIVO-17.png',
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -47,7 +56,6 @@ class _TarefasTelaState extends State<TarefasTela> {
                       fit: BoxFit.contain,
                     ),
                   ),
-                  
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Color.fromRGBO(61, 190, 1, 1),

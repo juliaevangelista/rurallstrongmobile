@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rurallstrong/repositories/talhao.dart';
 import 'package:rurallstrong/telas/armadilhas/form_armadilha_tela.dart';
+import 'package:rurallstrong/telas/inicio_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 import 'package:rurallstrong/controllers/geolocalizacao_controller.dart';
 import 'package:provider/provider.dart';
@@ -67,13 +68,21 @@ class _ArmadilhaTelaState extends State<ArmadilhaTela> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 65,
-            height: 65,
-            margin: EdgeInsets.fromLTRB(20, 15, 20, 7),
-            child: Image.asset(
-              'assets/APLICATIVO-16.png',
-              fit: BoxFit.contain,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => InicioTela()),
+              );
+            },
+            child: Container(
+              width: 65,
+              height: 65,
+              margin: EdgeInsets.fromLTRB(20, 15, 20, 7),
+              child: Image.asset(
+                'assets/APLICATIVO-17.png',
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           SizedBox(width: 80),
@@ -133,12 +142,13 @@ class _ArmadilhaTelaState extends State<ArmadilhaTela> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                items: nomesTalhoes
-                    .map<DropdownMenuItem<String>>((String value) {
+                items:
+                    nomesTalhoes.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                       child: Text(
                         value,
                         style: TextStyle(color: Colors.black),
