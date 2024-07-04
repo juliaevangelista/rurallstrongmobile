@@ -1,5 +1,9 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rurallstrong/telas/inicio_tela.dart';
+import 'package:rurallstrong/telas/tarefas/tarefas_tela.dart';
 import 'package:rurallstrong/telas/telateste.dart';
 
 class AtualizarTarefasTela extends StatefulWidget {
@@ -11,6 +15,9 @@ class AtualizarTarefasTela extends StatefulWidget {
 
 class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
   bool tarefaConcluida = false;
+  File? _selectedImage;
+  String imageUrl = '';
+  List<File> _images = []; // Lista para armazenar as imagens
 
   @override
   Widget build(BuildContext context) {
@@ -40,22 +47,22 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => InicioTela()),
-                      );
-                    },
-                    child: Container(
-                      width: 65,
-                      height: 65,
-                      margin: EdgeInsets.fromLTRB(20, 15, 20, 7),
-                      child: Image.asset(
-                        'assets/APLICATIVO-17.png',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => InicioTela()),
+              );
+            },
+            child: Container(
+              width: 65,
+              height: 65,
+              margin: EdgeInsets.fromLTRB(20, 15, 20, 7),
+              child: Image.asset(
+                'assets/APLICATIVO-17.png',
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
           SizedBox(width: 20),
           logo('assets/icon-tarefas.png', 80),
           ElevatedButton(
@@ -66,7 +73,7 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TelaTeste()),
+                MaterialPageRoute(builder: (context) => TarefasTela()),
               );
             },
             child: Text(
@@ -260,15 +267,40 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
 
   Widget botaoCamera() {
     return Container(
-      width: 150,
-      height: 55,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
-        onTap: () => {},
+      width: 165,
+      height: 60,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Color.fromRGBO(61, 190, 1, 1),
+          backgroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+        ),
+        onPressed: () async {
+          try {
+            final ImagePicker imagePicker = ImagePicker();
+            XFile? file =
+                await imagePicker.pickImage(source: ImageSource.camera);
+            if (file == null) return;
+            setState(() {
+              _selectedImage = File(file.path);
+              _images.add(File(file.path)); // Adicione a nova imagem à lista
+            });
+            String uniqueFileName =
+                DateTime.now().millisecondsSinceEpoch.toString();
+            Reference referenceRoot = FirebaseStorage.instance.ref();
+            Reference referenceDirImages = referenceRoot.child('images');
+            Reference referenceImageToUpload =
+                referenceDirImages.child(uniqueFileName);
+            await referenceImageToUpload.putFile(File(file.path));
+            imageUrl = await referenceImageToUpload.getDownloadURL();
+            print('URL da imagem: $imageUrl');
+          } catch (error) {
+            // Manipula erros
+            print('Erro ao enviar a imagem para o Firebase Storage: $error');
+          }
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -360,7 +392,17 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
   Widget botaoDialogo(String texto, Color cor) {
     return ElevatedButton(
       onPressed: () {
-        // Implemente a lógica para cada opção aqui
+        // Lógica para o botão de diálogo
+        Navigator.of(context).pop(); // Fecha o diálogo
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Status atualizado com sucesso!'),
+          ),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => TarefasTela()), // Redireciona para a tela de tarefas
+        );
       },
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.black,
@@ -377,16 +419,53 @@ class _AtualizarTarefasTelaState extends State<AtualizarTarefasTela> {
     );
   }
 
-  Widget rodape() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          logo('assets/APLICATIVO-16.png', 50),
-          logo('assets/APLICATIVO-16.png', 50),
-          logo('assets/APLICATIVO-16.png', 50),
-        ],
-      ),
-    );
-  }
+Widget rodape() {
+  return Container(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (_selectedImage != null)
+          Container(
+            width: 100,
+            height: 100,
+            margin: EdgeInsets.fromLTRB(20, 15, 20, 10),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: FileImage(_selectedImage!),
+                fit: BoxFit.cover,
+              ),
+            ),
+          )
+        else
+          Container(
+            width: 100,
+            height: 100,
+            margin: EdgeInsets.fromLTRB(20, 15, 20, 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              
+            ),
+            child: Image.asset(
+              'assets/APLICATIVO-16.png',
+              fit: BoxFit.contain,
+            ),
+          ),
+        ..._images.map((image) {
+          return Container(
+            width: 100,
+            height: 100,
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: FileImage(image),
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        }).toList(),
+      ],
+    ),
+  );
+}
+
 }
